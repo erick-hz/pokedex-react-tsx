@@ -13,5 +13,44 @@
   "themeToggle": "Toggle theme",
   "language": "Language",
   "english": "English",
-  "spanish": "Spanish"
+  "spanish": "Spanish",
+  "yes": "Yes",
+  "no": "No",
+  "refresh": "Refresh",
+  "loading": "Loading...",
+  "publicApis": {
+    "title": "Pokédex companion",
+    "lore": {
+      "eyebrow": "Species lore",
+      "title": "Flavor text",
+      "description": "A Pokédex entry from the species database."
+    },
+    "evolution": {
+      "eyebrow": "Evolution line",
+      "title": "Evolution chain",
+      "description": "See where the selected Pokémon can evolve next."
+    },
+    "battle": {
+      "eyebrow": "Battle intel",
+      "title": "Type matchup",
+      "description": "Weaknesses and resistances from PokeAPI."
+    },
+    "profile": {
+      "eyebrow": "Species profile",
+      "title": "Core species data",
+      "description": "Capture rate, color, and legendary status."
+    },
+    "habitat": "Habitat",
+    "generation": "Generation",
+    "captureRate": "Capture rate",
+    "color": "Color",
+    "legendary": "Legendary",
+    "mythical": "Mythical",
+    "weakTo": "Weak to",
+    "resists": "Resists",
+    "immuneTo": "Immune to",
+    "unknown": "Unknown",
+    "none": "None",
+    "loadingLine": "Loading evolution chain..."
+  }
 }

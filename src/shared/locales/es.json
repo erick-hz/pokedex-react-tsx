@@ -13,5 +13,44 @@
   "themeToggle": "Cambiar tema",
   "language": "Idioma",
   "english": "Inglés",
-  "spanish": "Español"
+  "spanish": "Español",
+  "yes": "Sí",
+  "no": "No",
+  "refresh": "Actualizar",
+  "loading": "Cargando...",
+  "publicApis": {
+    "title": "Compañero de Pokédex",
+    "lore": {
+      "eyebrow": "Historia de especie",
+      "title": "Texto de la Pokédex",
+      "description": "Una entrada de la base de datos de especies."
+    },
+    "evolution": {
+      "eyebrow": "Línea evolutiva",
+      "title": "Cadena de evolución",
+      "description": "Mira en qué puede evolucionar el Pokémon seleccionado."
+    },
+    "battle": {
+      "eyebrow": "Datos de batalla",
+      "title": "Emparejamiento de tipos",
+      "description": "Debilidades y resistencias desde PokeAPI."
+    },
+    "profile": {
+      "eyebrow": "Perfil de especie",
+      "title": "Datos principales",
+      "description": "Tasa de captura, color y estado legendario."
+    },
+    "habitat": "Hábitat",
+    "generation": "Generación",
+    "captureRate": "Tasa de captura",
+    "color": "Color",
+    "legendary": "Legendario",
+    "mythical": "Mítico",
+    "weakTo": "Débil a",
+    "resists": "Resiste",
+    "immuneTo": "Inmune a",
+    "unknown": "Desconocido",
+    "none": "Ninguno",
+    "loadingLine": "Cargando cadena evolutiva..."
+  }
 }
