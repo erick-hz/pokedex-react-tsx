@@ -1,0 +1,17 @@
+{
+  "appTitle": "Explorador de Pokémon",
+  "pokedex": "Pokédex",
+  "selectPokemon": "Selecciona un Pokémon",
+  "loadingPokemon": "Cargando Pokémon...",
+  "loadingDetails": "Cargando detalles...",
+  "profile": "Perfil",
+  "noImage": "Sin imagen",
+  "height": "Altura",
+  "weight": "Peso",
+  "types": "Tipos",
+  "baseXp": "XP base",
+  "themeToggle": "Cambiar tema",
+  "language": "Idioma",
+  "english": "Inglés",
+  "spanish": "Español"
+}
