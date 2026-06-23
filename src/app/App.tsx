@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import './styles/App.css'
 import { LanguageSwitcher } from '@features/language-switcher'
 import { PokemonDetail, PokemonList } from '@features/pokemon'
+import { PublicApisDashboard } from '@features/public-apis'
 import { ThemeToggle } from '@features/theme-toggle'
 
 function App() {
@@ -43,6 +44,10 @@ function App() {
       <section className="pokedex-grid">
         <PokemonList selectedPokemon={selectedPokemon} onSelectPokemon={setSelectedPokemon} />
         <PokemonDetail selectedPokemon={selectedPokemon} />
+      </section>
+
+      <section className="section-stack">
+        <PublicApisDashboard selectedPokemon={selectedPokemon} />
       </section>
     </main>
   )

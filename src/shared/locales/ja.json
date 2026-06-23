@@ -14,5 +14,44 @@
   "language": "言語",
   "english": "英語",
   "spanish": "スペイン語",
-  "japanese": "日本語"
+  "japanese": "日本語",
+  "yes": "はい",
+  "no": "いいえ",
+  "refresh": "更新",
+  "loading": "読み込み中...",
+  "publicApis": {
+    "title": "ポケモン図鑑コンパニオン",
+    "lore": {
+      "eyebrow": "種族の伝承",
+      "title": "図鑑テキスト",
+      "description": "種族データベースから取得した図鑑の説明です。"
+    },
+    "evolution": {
+      "eyebrow": "進化ライン",
+      "title": "進化チェーン",
+      "description": "選択中のポケモンが次に進化できる形を表示します。"
+    },
+    "battle": {
+      "eyebrow": "バトル情報",
+      "title": "タイプ相性",
+      "description": "PokeAPI から弱点と耐性を表示します。"
+    },
+    "profile": {
+      "eyebrow": "種族プロフィール",
+      "title": "基本データ",
+      "description": "捕獲率、色、伝説の有無を表示します。"
+    },
+    "habitat": "生息地",
+    "generation": "世代",
+    "captureRate": "捕獲率",
+    "color": "色",
+    "legendary": "伝説",
+    "mythical": "幻",
+    "weakTo": "弱点",
+    "resists": "耐性",
+    "immuneTo": "無効",
+    "unknown": "不明",
+    "none": "なし",
+    "loadingLine": "進化チェーンを読み込み中..."
+  }
 }
