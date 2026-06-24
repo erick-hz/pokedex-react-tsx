@@ -1,6 +1,121 @@
 {
   "appTitle": "ポケモン エクスプローラー",
   "pokedex": "ポケモン図鑑",
+  "routes": {
+    "navigation": "メインナビゲーション",
+    "home": "ホーム",
+    "pokedex": "図鑑",
+    "intel": "インテリジェンス",
+    "battleLab": "バトルラボ",
+    "actions": {
+      "openSpotlight": "スポットライトページを開く",
+      "openBattleLab": "バトルラボで開く",
+      "backToList": "リストに戻る",
+      "openIntel": "インテリジェンスを開く"
+    },
+    "notFound": {
+      "title": "ルートが見つかりません",
+      "description": "このルートは存在しません。既知の画面に戻ってください。",
+      "backHome": "ホームに戻る",
+      "openPokedex": "図鑑を開く"
+    }
+  },
+  "routeHub": {
+    "title": "ルートを選択",
+    "subtitle": "ルートごとに操作を分けましょう。図鑑を探索し、バトル情報を確認し、ラボで並列比較できます。",
+    "openPokedex": "図鑑を開く",
+    "openIntel": "インテリジェンスを開く",
+    "openLab": "バトルラボを開く",
+    "spotlight": "スポットライト",
+    "quickJump": "クイックジャンプ",
+    "quick": {
+      "pikachu": "ピカチュウ",
+      "gengar": "ゲンガー",
+      "lucario": "ルカリオ",
+      "charizard": "リザードン",
+      "greninja": "ゲッコウガ",
+      "mewtwo": "ミュウツー"
+    }
+  },
+  "battleLab": {
+    "title": "対戦カードを作成",
+    "editChallenger": "図鑑で挑戦者を編集"
+  },
+  "homeDynamic": {
+    "eyebrow": "ライブパルス",
+    "title": "現在の注目: {{name}}",
+    "shortIntro": "ライブ選択、ルート提案、ワンタップ操作をまとめた高速ハブ。",
+    "gallerySubtitle": "カードを選んですぐ移動。",
+    "subtitle": "ホームから離れずにスポットライトを切り替え、分析ルートへすぐ移動できます。",
+    "randomize": "スポットライトをシャッフル",
+    "openSpotlight": "このスポットライトを開く",
+    "launches": "起動回数: {{count}}",
+    "greetingMorning": "おはようございます、トレーナー",
+    "greetingAfternoon": "こんにちは、トレーナー",
+    "greetingEvening": "こんばんは、トレーナー",
+    "routeCards": {
+      "pokedex": "手持ちを確認し、詳細プロフィールを開きます。",
+      "intel": "種族情報と相性コンテキストを確認します。",
+      "battleLab": "2つの構成を素早く並べて比較します。"
+    },
+    "recommendation": {
+      "pokedex": "現在のおすすめ: 図鑑を続ける。",
+      "intel": "現在のおすすめ: バトル情報を確認する。",
+      "battleLab": "現在のおすすめ: バトルラボへ移動する。"
+    },
+    "missionEyebrow": "ミッションフィード",
+    "missionTitle": "セッションの勢い",
+    "github": {
+      "eyebrow": "GitHub API",
+      "title": "リポジトリ応答",
+      "openRepo": "リポジトリを開く",
+      "loading": "リポジトリデータを読み込み中...",
+      "error": "GitHubデータを読み込めませんでした。",
+      "stars": "スター",
+      "forks": "フォーク",
+      "issues": "Issue",
+      "language": "言語",
+      "owner": "Owner",
+      "visibility": "可視性",
+      "branch": "ブランチ",
+      "licenseLabel": "ライセンス",
+      "watchers": "Watchers",
+      "size": "サイズ",
+      "created": "作成日",
+      "updated": "更新日",
+      "homepage": "ホームページを開く",
+      "topics": "Topics",
+      "noDescription": "リポジトリ説明はありません。",
+      "none": "なし",
+      "unknown": "不明",
+      "payload": "APIレスポンス全体"
+    },
+    "recentTitle": "最近開いたスポットライト",
+    "recentEmpty": "最近のスポットライトはまだありません。",
+    "nextMove": "次の推奨アクション",
+    "followRecommendation": "おすすめに従う",
+    "carousel": {
+      "region": "ルートカルーセル",
+      "open": "ルートを開く",
+      "prev": "前のスライド",
+      "next": "次のスライド",
+      "prevShort": "前へ",
+      "nextShort": "次へ",
+      "pagination": "カルーセルページ",
+      "slide": "{{total}}件中{{current}}件目"
+    },
+    "tips": {
+      "0": "ヒント: スポットライト後にインテリジェンスを開いて弱点を確認しましょう。",
+      "1": "ヒント: バトルラボは異なるタイプ系統の相手でより効果的です。",
+      "2": "ヒント: 言語を切り替えてタイプ名を比較すると学習が速くなります。",
+      "3": "ヒント: 集中確認はスポットライト、連続操作は図鑑に戻るのが効率的です。"
+    },
+    "metrics": {
+      "loaded": "読み込み数",
+      "language": "言語",
+      "routes": "ルート"
+    }
+  },
   "selectPokemon": "ポケモンを選択",
   "loadingPokemon": "ポケモンを読み込み中...",
   "loadingDetails": "詳細を読み込み中...",
@@ -11,7 +126,14 @@
   "types": "タイプ",
   "baseXp": "基本経験値",
   "themeToggle": "テーマ切り替え",
-  "language": "言語",
+  "theme": {
+    "lightMode": "ライトモード",
+    "darkMode": "ダークモード"
+  },
+  "language": {
+    "select": "言語を選択",
+    "options": "言語オプション"
+  },
   "english": "英語",
   "spanish": "スペイン語",
   "japanese": "日本語",
@@ -52,6 +174,7 @@
     "immuneTo": "無効",
     "unknown": "不明",
     "none": "なし",
+    "error": "現在データを読み込めません。",
     "loadingLine": "進化チェーンを読み込み中..."
   }
 }

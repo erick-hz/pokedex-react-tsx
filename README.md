@@ -52,6 +52,7 @@ Please complete the checklist and run `npm run lint` and `npm run build` before 
 ## External API
 
 - https://pokeapi.co/
+- https://api.github.com/repos/erick-hz/pokedex-react-tsx
 
 ## License
 

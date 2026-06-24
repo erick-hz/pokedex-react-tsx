@@ -1,3 +1,8 @@
+export interface NamedApiResource {
+  name: string
+  url: string
+}
+
 export interface PokemonFlavorTextEntry {
   flavor_text: string
   language: {
@@ -10,9 +15,7 @@ export interface PokemonFlavorTextEntry {
 
 export interface PokemonSpeciesResponse {
   capture_rate: number
-  color: {
-    name: string
-  }
+  color: NamedApiResource
   evolution_chain: {
     url: string
   }
@@ -23,14 +26,10 @@ export interface PokemonSpeciesResponse {
       name: string
     }
   }>
-  habitat: {
-    name: string
-  } | null
+  habitat: NamedApiResource | null
   is_legendary: boolean
   is_mythical: boolean
-  generation: {
-    name: string
-  }
+  generation: NamedApiResource
 }
 
 export interface PokemonEvolutionChainNode {
@@ -49,4 +48,14 @@ export interface PokemonBattleIntelResponse {
   weaknesses: string[]
   resistances: string[]
   immunities: string[]
+}
+
+export interface PokemonCompanionDataResponse {
+  flavorText: string
+  genus: string
+  species: PokemonSpeciesResponse
+  evolutionLine: string[]
+  habitatLabel: string
+  generationLabel: string
+  colorLabel: string
 }
