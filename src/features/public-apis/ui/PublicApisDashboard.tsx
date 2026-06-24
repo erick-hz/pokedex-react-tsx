@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 
-import { usePokemonBattleIntel, usePokemonCompanionData } from '../model/hooks'
+import { usePokemonBattleIntel, usePokemonCompanionData } from '@features/public-apis/model/hooks'
 
-import { PublicApiCard } from './PublicApiCard'
+import { PublicApiCard } from '@features/public-apis/ui/PublicApiCard'
 
 type PublicApisDashboardProps = {
   selectedPokemon: string

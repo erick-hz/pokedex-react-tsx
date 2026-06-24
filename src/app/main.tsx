@@ -5,7 +5,7 @@ import { RouterProvider } from '@tanstack/react-router'
 import './styles/index.css'
 import './styles/App.css'
 import '@shared/config/i18n'
-import { router } from './router'
+import { router } from '@app/router'
 
 const queryClient = new QueryClient()
 

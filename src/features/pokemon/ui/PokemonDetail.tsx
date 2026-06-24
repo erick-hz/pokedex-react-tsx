@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePokemonDetails } from '@features/pokemon/model/hooks'
 import { PokemonHoloCard, SectionCard } from '@shared/ui'
+import { StatCard } from '@shared/ui'
 
 type PokemonDetailProps = {
   selectedPokemon: string
@@ -74,10 +75,7 @@ export function PokemonDetail({
 
             <div className="stats-row pokemon-stats">
               {stats.map((stat) => (
-                <article key={stat.label} className="stat-card">
-                  <span>{stat.label}</span>
-                  <strong>{stat.value}</strong>
-                </article>
+                <StatCard key={stat.label} label={stat.label} value={stat.value} />
               ))}
             </div>
           </div>

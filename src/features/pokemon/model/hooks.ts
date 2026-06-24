@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import {
   fetchPokemonDetails,
-  fetchPokemonListWithNames,
+  fetchPokemonList,
 } from '../api/pokemonApi'
 
 import { pokemonKeys } from './queryKeys'
@@ -12,11 +12,11 @@ const POKEMON_LIMIT = 20
 
 export function usePokemonList() {
   const { i18n } = useTranslation()
+  const language = i18n.resolvedLanguage ?? i18n.language
 
   return useQuery({
-    queryKey: pokemonKeys.list(i18n.language),
-    queryFn: () =>
-      fetchPokemonListWithNames(POKEMON_LIMIT, i18n.language),
+    queryKey: pokemonKeys.list(language),
+    queryFn: () => fetchPokemonList(POKEMON_LIMIT),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   })
@@ -24,10 +24,11 @@ export function usePokemonList() {
 
 export function usePokemonDetails(name: string) {
   const { i18n } = useTranslation()
+  const language = i18n.resolvedLanguage ?? i18n.language
 
   return useQuery({
-    queryKey: pokemonKeys.detail(name, i18n.language),
-    queryFn: () => fetchPokemonDetails(name, i18n.language),
+    queryKey: pokemonKeys.detail(name, language),
+    queryFn: () => fetchPokemonDetails(name, language),
     enabled: Boolean(name),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
