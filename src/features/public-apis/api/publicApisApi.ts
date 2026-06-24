@@ -2,9 +2,33 @@ import { fetchPokemonDetails } from '@features/pokemon/api/pokemonApi'
 
 import type {
   PokemonBattleIntelResponse,
+  PokemonCompanionDataResponse,
   PokemonEvolutionChainResponse,
   PokemonSpeciesResponse,
 } from '../model/types'
+
+type LocalizedNameResponse = {
+  names: Array<{
+    name: string
+    language: {
+      name: string
+    }
+  }>
+}
+
+type TypeDetailResponse = {
+  names: Array<{
+    name: string
+    language: {
+      name: string
+    }
+  }>
+  damage_relations: {
+    double_damage_from: Array<{ name: string }>
+    half_damage_from: Array<{ name: string }>
+    no_damage_from: Array<{ name: string }>
+  }
+}
 
 async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
@@ -33,6 +57,50 @@ function titleCasePokemonName(name: string) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ')
+}
+
+function getLocalizedName(
+  names: LocalizedNameResponse['names'],
+  language: string,
+  fallback: string,
+) {
+  const lang = getLanguageCode(language)
+
+  return (
+    names.find((entry) => entry.language.name === lang)?.name ??
+    names.find((entry) => entry.language.name === 'en')?.name ??
+    fallback
+  )
+}
+
+async function fetchLocalizedResourceName(
+  url: string | undefined,
+  language: string,
+  fallback: string,
+) {
+  if (!url) {
+    return fallback
+  }
+
+  const resource = await fetchJson<LocalizedNameResponse>(url)
+
+  return getLocalizedName(resource.names, language, fallback)
+}
+
+async function localizeTypeNames(names: string[], language: string) {
+  if (names.length === 0) {
+    return []
+  }
+
+  const localizedEntries = await Promise.all(
+    names.map(async (typeName) => {
+      const detail = await fetchJson<TypeDetailResponse>(`https://pokeapi.co/api/v2/type/${typeName}`)
+
+      return getLocalizedName(detail.names, language, titleCasePokemonName(typeName))
+    }),
+  )
+
+  return localizedEntries
 }
 
 export async function fetchPokemonSpeciesData(
@@ -66,10 +134,23 @@ async function collectLocalizedEvolutionNames(
   return [currentName, ...evolvedNames.flat()]
 }
 
-export async function fetchPokemonCompanionData(name: string, language = 'en') {
+export async function fetchPokemonCompanionData(
+  name: string,
+  language = 'en',
+): Promise<PokemonCompanionDataResponse> {
   const species = await fetchPokemonSpeciesData(name)
   const evolutionChain = await fetchJson<PokemonEvolutionChainResponse>(species.evolution_chain.url)
   const lang = getLanguageCode(language)
+
+  const [habitatLabel, generationLabel, colorLabel] = await Promise.all([
+    fetchLocalizedResourceName(
+      species.habitat?.url,
+      language,
+      species.habitat?.name ?? 'Unknown',
+    ),
+    fetchLocalizedResourceName(species.generation.url, language, species.generation.name),
+    fetchLocalizedResourceName(species.color.url, language, species.color.name),
+  ])
 
   return {
     flavorText:
@@ -83,6 +164,9 @@ export async function fetchPokemonCompanionData(name: string, language = 'en') {
       titleCasePokemonName(name),
     species,
     evolutionLine: await collectLocalizedEvolutionNames(evolutionChain.chain, language),
+    habitatLabel,
+    generationLabel,
+    colorLabel,
   }
 }
 
@@ -94,15 +178,16 @@ export async function fetchPokemonBattleIntel(
 
   const damageRelationsList = await Promise.all(
     pokemon.types.map(async (typeEntry) => {
-      const response = await fetchJson<{
-        damage_relations: {
-          double_damage_from: Array<{ name: string }>
-          half_damage_from: Array<{ name: string }>
-          no_damage_from: Array<{ name: string }>
-        }
-      }>(`https://pokeapi.co/api/v2/type/${typeEntry.type.name}`)
+      const response = await fetchJson<TypeDetailResponse>(`https://pokeapi.co/api/v2/type/${typeEntry.type.name}`)
 
-      return response.damage_relations
+      return {
+        damageRelations: response.damage_relations,
+        localizedName: getLocalizedName(
+          response.names,
+          language,
+          titleCasePokemonName(typeEntry.type.name),
+        ),
+      }
     }),
   )
 
@@ -110,16 +195,22 @@ export async function fetchPokemonBattleIntel(
   const resistances = new Set<string>()
   const immunities = new Set<string>()
 
-  for (const damageRelations of damageRelationsList) {
-    damageRelations.double_damage_from.forEach((entry) => weaknesses.add(entry.name))
-    damageRelations.half_damage_from.forEach((entry) => resistances.add(entry.name))
-    damageRelations.no_damage_from.forEach((entry) => immunities.add(entry.name))
+  for (const relation of damageRelationsList) {
+    relation.damageRelations.double_damage_from.forEach((entry) => weaknesses.add(entry.name))
+    relation.damageRelations.half_damage_from.forEach((entry) => resistances.add(entry.name))
+    relation.damageRelations.no_damage_from.forEach((entry) => immunities.add(entry.name))
   }
 
+  const [weaknessesLocalized, resistancesLocalized, immunitiesLocalized] = await Promise.all([
+    localizeTypeNames(Array.from(weaknesses), language),
+    localizeTypeNames(Array.from(resistances), language),
+    localizeTypeNames(Array.from(immunities), language),
+  ])
+
   return {
-    types: pokemon.types.map((entry) => titleCasePokemonName(entry.type.name)),
-    weaknesses: Array.from(weaknesses).map(titleCasePokemonName),
-    resistances: Array.from(resistances).map(titleCasePokemonName),
-    immunities: Array.from(immunities).map(titleCasePokemonName),
+    types: damageRelationsList.map((entry) => entry.localizedName),
+    weaknesses: weaknessesLocalized,
+    resistances: resistancesLocalized,
+    immunities: immunitiesLocalized,
   }
 }

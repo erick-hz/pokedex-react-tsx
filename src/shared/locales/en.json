@@ -1,6 +1,121 @@
 {
   "appTitle": "Pokémon Explorer",
   "pokedex": "Pokédex",
+  "routes": {
+    "navigation": "Main navigation",
+    "home": "Home",
+    "pokedex": "Pokedex",
+    "intel": "Intel",
+    "battleLab": "Battle Lab",
+    "actions": {
+      "openSpotlight": "Open spotlight page",
+      "openBattleLab": "Open in battle lab",
+      "backToList": "Back to list",
+      "openIntel": "Open intelligence"
+    },
+    "notFound": {
+      "title": "Route not found",
+      "description": "This route does not exist. Jump back to a known view.",
+      "backHome": "Back home",
+      "openPokedex": "Open Pokedex"
+    }
+  },
+  "routeHub": {
+    "title": "Choose your route",
+    "subtitle": "Split your workflow by route: explore your Pokedex, inspect battle intelligence, and open the battle lab for side-by-side analysis.",
+    "openPokedex": "Open Pokedex",
+    "openIntel": "Open Intel",
+    "openLab": "Open Battle Lab",
+    "spotlight": "Spotlight",
+    "quickJump": "Quick spotlight jumps",
+    "quick": {
+      "pikachu": "Pikachu",
+      "gengar": "Gengar",
+      "lucario": "Lucario",
+      "charizard": "Charizard",
+      "greninja": "Greninja",
+      "mewtwo": "Mewtwo"
+    }
+  },
+  "battleLab": {
+    "title": "Build your matchup",
+    "editChallenger": "Edit challenger in Pokedex"
+  },
+  "homeDynamic": {
+    "eyebrow": "Live pulse",
+    "title": "Now featuring {{name}}",
+    "shortIntro": "Fast hub with live picks, route cues, and one-tap actions.",
+    "gallerySubtitle": "Pick a card and jump.",
+    "subtitle": "Rotate your spotlight and jump directly into analysis routes without leaving the home dashboard.",
+    "randomize": "Shuffle spotlight",
+    "openSpotlight": "Open this spotlight",
+    "launches": "Launches: {{count}}",
+    "greetingMorning": "Good morning, trainer",
+    "greetingAfternoon": "Good afternoon, trainer",
+    "greetingEvening": "Good evening, trainer",
+    "routeCards": {
+      "pokedex": "Browse your roster and open detailed profiles.",
+      "intel": "Check species intel and matchup context.",
+      "battleLab": "Compare two builds side-by-side quickly."
+    },
+    "recommendation": {
+      "pokedex": "Recommended now: continue in Pokedex.",
+      "intel": "Recommended now: inspect battle intelligence.",
+      "battleLab": "Recommended now: jump to Battle Lab."
+    },
+    "missionEyebrow": "Mission feed",
+    "missionTitle": "Session momentum",
+    "github": {
+      "eyebrow": "GitHub API",
+      "title": "Repository response",
+      "openRepo": "Open repository",
+      "loading": "Loading repository data...",
+      "error": "Could not load GitHub data.",
+      "stars": "Stars",
+      "forks": "Forks",
+      "issues": "Issues",
+      "language": "Language",
+      "owner": "Owner",
+      "visibility": "Visibility",
+      "branch": "Branch",
+      "licenseLabel": "License",
+      "watchers": "Watchers",
+      "size": "Size",
+      "created": "Created",
+      "updated": "Updated",
+      "homepage": "Open homepage",
+      "topics": "Topics",
+      "noDescription": "No repository description.",
+      "none": "None",
+      "unknown": "Unknown",
+      "payload": "Full API payload"
+    },
+    "recentTitle": "Recently opened spotlight",
+    "recentEmpty": "No recent spotlight yet.",
+    "nextMove": "Suggested next move",
+    "followRecommendation": "Follow recommendation",
+    "carousel": {
+      "region": "Route carousel",
+      "open": "Open route",
+      "prev": "Previous slide",
+      "next": "Next slide",
+      "prevShort": "Prev",
+      "nextShort": "Next",
+      "pagination": "Carousel pagination",
+      "slide": "Slide {{current}} of {{total}}"
+    },
+    "tips": {
+      "0": "Tip: Open Intel after spotlight to validate weaknesses before battle prep.",
+      "1": "Tip: Battle Lab works best when your rival is from a different type family.",
+      "2": "Tip: Switch language and compare localized type labels for faster learning.",
+      "3": "Tip: Use Spotlight for focused review, then return to Pokedex for queue flow."
+    },
+    "metrics": {
+      "loaded": "Loaded",
+      "language": "Language",
+      "routes": "Routes"
+    }
+  },
   "selectPokemon": "Select a Pokémon",
   "loadingPokemon": "Loading Pokémon...",
   "loadingDetails": "Loading details...",
@@ -11,9 +126,17 @@
   "types": "Types",
   "baseXp": "Base XP",
   "themeToggle": "Toggle theme",
-  "language": "Language",
+  "theme": {
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode"
+  },
+  "language": {
+    "select": "Select language",
+    "options": "Language options"
+  },
   "english": "English",
   "spanish": "Spanish",
+  "japanese": "Japanese",
   "yes": "Yes",
   "no": "No",
   "refresh": "Refresh",
@@ -51,6 +174,7 @@
     "immuneTo": "Immune to",
     "unknown": "Unknown",
     "none": "None",
+    "error": "Unable to load data right now.",
     "loadingLine": "Loading evolution chain..."
   }
 }

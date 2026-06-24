@@ -1,6 +1,121 @@
 {
   "appTitle": "Explorador de Pokémon",
   "pokedex": "Pokédex",
+  "routes": {
+    "navigation": "Navegación principal",
+    "home": "Inicio",
+    "pokedex": "Pokedex",
+    "intel": "Inteligencia",
+    "battleLab": "Laboratorio",
+    "actions": {
+      "openSpotlight": "Abrir página destacada",
+      "openBattleLab": "Abrir en laboratorio",
+      "backToList": "Volver a la lista",
+      "openIntel": "Abrir inteligencia"
+    },
+    "notFound": {
+      "title": "Ruta no encontrada",
+      "description": "Esta ruta no existe. Regresa a una vista conocida.",
+      "backHome": "Volver al inicio",
+      "openPokedex": "Abrir Pokedex"
+    }
+  },
+  "routeHub": {
+    "title": "Elige tu ruta",
+    "subtitle": "Divide tu flujo por rutas: explora la Pokedex, revisa inteligencia de batalla y abre el laboratorio para análisis lado a lado.",
+    "openPokedex": "Abrir Pokedex",
+    "openIntel": "Abrir inteligencia",
+    "openLab": "Abrir laboratorio",
+    "spotlight": "Destacados",
+    "quickJump": "Saltos rápidos",
+    "quick": {
+      "pikachu": "Pikachu",
+      "gengar": "Gengar",
+      "lucario": "Lucario",
+      "charizard": "Charizard",
+      "greninja": "Greninja",
+      "mewtwo": "Mewtwo"
+    }
+  },
+  "battleLab": {
+    "title": "Construye tu enfrentamiento",
+    "editChallenger": "Editar retador en Pokedex"
+  },
+  "homeDynamic": {
+    "eyebrow": "Pulso en vivo",
+    "title": "Ahora destacando a {{name}}",
+    "shortIntro": "Panel rápido con picks en vivo, rutas sugeridas y acciones de un toque.",
+    "gallerySubtitle": "Elige una carta y salta.",
+    "subtitle": "Rota tu Pokémon destacado y salta directo a rutas de análisis sin salir del panel principal.",
+    "randomize": "Mezclar destacado",
+    "openSpotlight": "Abrir este destacado",
+    "launches": "Aperturas: {{count}}",
+    "greetingMorning": "Buenos días, entrenador",
+    "greetingAfternoon": "Buenas tardes, entrenador",
+    "greetingEvening": "Buenas noches, entrenador",
+    "routeCards": {
+      "pokedex": "Revisa tu equipo y abre perfiles detallados.",
+      "intel": "Consulta inteligencia de especie y contexto de combate.",
+      "battleLab": "Compara dos opciones lado a lado rápidamente."
+    },
+    "recommendation": {
+      "pokedex": "Recomendado ahora: continúa en Pokedex.",
+      "intel": "Recomendado ahora: revisa inteligencia de batalla.",
+      "battleLab": "Recomendado ahora: salta al Laboratorio."
+    },
+    "missionEyebrow": "Panel de misión",
+    "missionTitle": "Ritmo de sesión",
+    "github": {
+      "eyebrow": "API de GitHub",
+      "title": "Respuesta del repositorio",
+      "openRepo": "Abrir repositorio",
+      "loading": "Cargando datos del repositorio...",
+      "error": "No se pudieron cargar los datos de GitHub.",
+      "stars": "Estrellas",
+      "forks": "Forks",
+      "issues": "Issues",
+      "language": "Lenguaje",
+      "owner": "Owner",
+      "visibility": "Visibilidad",
+      "branch": "Rama",
+      "licenseLabel": "Licencia",
+      "watchers": "Watchers",
+      "size": "Tamaño",
+      "created": "Creado",
+      "updated": "Actualizado",
+      "homepage": "Abrir homepage",
+      "topics": "Topics",
+      "noDescription": "Sin descripción del repositorio.",
+      "none": "Ninguno",
+      "unknown": "Desconocido",
+      "payload": "Payload completo de API"
+    },
+    "recentTitle": "Destacados recientes",
+    "recentEmpty": "Aún no hay destacados recientes.",
+    "nextMove": "Siguiente jugada sugerida",
+    "followRecommendation": "Seguir recomendación",
+    "carousel": {
+      "region": "Carrusel de rutas",
+      "open": "Abrir ruta",
+      "prev": "Diapositiva anterior",
+      "next": "Siguiente diapositiva",
+      "prevShort": "Ant",
+      "nextShort": "Sig",
+      "pagination": "Paginación del carrusel",
+      "slide": "Diapositiva {{current}} de {{total}}"
+    },
+    "tips": {
+      "0": "Tip: abre Inteligencia después del destacado para validar debilidades.",
+      "1": "Tip: el Laboratorio funciona mejor con rivales de tipo diferente.",
+      "2": "Tip: cambia de idioma y compara etiquetas de tipos para aprender más rápido.",
+      "3": "Tip: usa Destacado para enfoque y vuelve a Pokedex para continuar el flujo."
+    },
+    "metrics": {
+      "loaded": "Cargados",
+      "language": "Idioma",
+      "routes": "Rutas"
+    }
+  },
   "selectPokemon": "Selecciona un Pokémon",
   "loadingPokemon": "Cargando Pokémon...",
   "loadingDetails": "Cargando detalles...",
@@ -11,9 +126,17 @@
   "types": "Tipos",
   "baseXp": "XP base",
   "themeToggle": "Cambiar tema",
-  "language": "Idioma",
+  "theme": {
+    "lightMode": "Modo claro",
+    "darkMode": "Modo oscuro"
+  },
+  "language": {
+    "select": "Seleccionar idioma",
+    "options": "Opciones de idioma"
+  },
   "english": "Inglés",
   "spanish": "Español",
+  "japanese": "Japonés",
   "yes": "Sí",
   "no": "No",
   "refresh": "Actualizar",
@@ -51,6 +174,7 @@
     "immuneTo": "Inmune a",
     "unknown": "Desconocido",
     "none": "Ninguno",
+    "error": "No se pueden cargar los datos en este momento.",
     "loadingLine": "Cargando cadena evolutiva..."
   }
 }

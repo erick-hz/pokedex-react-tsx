@@ -5,14 +5,14 @@ type LanguageCode = 'en' | 'es' | 'ja'
 
 type LanguageOption = {
   code: LanguageCode
-  label: string
+  labelKey: 'english' | 'spanish' | 'japanese'
   flag: string
 }
 
 const LANGUAGES: readonly LanguageOption[] = [
-  { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png' },
-  { code: 'es', label: 'Español', flag: 'https://flagcdn.com/w40/es.png' },
-  { code: 'ja', label: '日本語', flag: 'https://flagcdn.com/w40/jp.png' },
+  { code: 'en', labelKey: 'english', flag: 'https://flagcdn.com/w40/us.png' },
+  { code: 'es', labelKey: 'spanish', flag: 'https://flagcdn.com/w40/es.png' },
+  { code: 'ja', labelKey: 'japanese', flag: 'https://flagcdn.com/w40/jp.png' },
 ] as const
 
 export default function LanguageSwitcher() {
@@ -51,6 +51,7 @@ export default function LanguageSwitcher() {
       }
 
       await i18n.changeLanguage(language)
+      window.localStorage.setItem('language', language)
       closeMenu()
 
       buttonRef.current?.focus()
@@ -107,7 +108,7 @@ export default function LanguageSwitcher() {
         />
 
         <span className="language-dropdown-text">
-          {currentLanguage.label}
+          {t(currentLanguage.labelKey)}
         </span>
       </button>
 
@@ -142,7 +143,7 @@ export default function LanguageSwitcher() {
                   className="language-option-flag"
                 />
 
-                <span>{language.label}</span>
+                <span>{t(language.labelKey)}</span>
               </button>
             )
           })}
