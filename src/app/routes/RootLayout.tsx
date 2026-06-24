@@ -29,15 +29,21 @@ export function RootLayout() {
   return (
     <main className="pokedex-shell">
       <header className="gateway-header gateway-header--router">
-        <div className="header-brand-block">
-          <p className="eyebrow">{t('pokedex')}</p>
-          <h1>{t('appTitle')}</h1>
-        </div>
+        <Link to="/" className="header-brand-link" aria-label={t('routes.home')}>
+          <div className="header-brand-block">
+            <p className="eyebrow">{t('pokedex')}</p>
+            <div className="header-brand-title-row">
+              {isDarkMode ? (
+                <img src="/poke-purple.png" className="pokeball-logo-image" alt="" aria-hidden="true" />
+              ) : (
+                <span className="pokeball-logo" aria-hidden="true" />
+              )}
+              <h1>{t('appTitle')}</h1>
+            </div>
+          </div>
+        </Link>
 
         <nav className="route-nav" aria-label={t('routes.navigation')}>
-          <Link to="/" className="route-nav-link" activeProps={{ className: 'route-nav-link active' }}>
-            {t('routes.home')}
-          </Link>
           <Link to="/pokedex" className="route-nav-link" activeProps={{ className: 'route-nav-link active' }}>
             {t('routes.pokedex')}
           </Link>

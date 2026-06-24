@@ -107,6 +107,85 @@ body {
   min-width: 220px;
 }
 
+.header-brand-link {
+  display: inline-flex;
+  align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
+}
+
+.header-brand-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-brand-link:hover .pokeball-logo {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.header-brand-link:hover .pokeball-logo-image {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.pokeball-logo {
+  position: relative;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  background:
+    linear-gradient(
+      to bottom,
+      #f04f4f 0,
+      #f04f4f calc(50% - 2px),
+      #222 calc(50% - 2px),
+      #222 calc(50% + 2px),
+      #f5f5f5 calc(50% + 2px),
+      #f5f5f5 100%
+    );
+  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.pokeball-logo::before,
+.pokeball-logo::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.pokeball-logo::before {
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #222;
+  background: #f5f5f5;
+}
+
+.pokeball-logo::after {
+  width: 6px;
+  height: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #d2d2d2;
+}
+
+.pokeball-logo-image {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
 .route-nav {
   display: flex;
   flex-wrap: wrap;
