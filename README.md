@@ -7,6 +7,7 @@ Pokedex web app built with React, TypeScript, and Vite, using PokeAPI as the dat
 - React 19
 - TypeScript
 - Vite
+- TanStack Router
 - TanStack Query
 - i18next + react-i18next
 - ESLint
@@ -36,9 +37,9 @@ App URL: http://localhost:5173
 
 ```text
 src/
-  app/        # App bootstrap and global styles
-  features/   # Feature modules (pokemon, theme-toggle, language-switcher)
-  shared/     # Shared UI, config, and locales
+  app/        # App bootstrap, router, routes, and global styles
+  features/   # Feature modules (pokemon, public-apis, theme-toggle, language-switcher)
+  shared/     # Shared UI components, config, and locales
 ```
 
 ## Contributing
