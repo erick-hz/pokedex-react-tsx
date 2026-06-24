@@ -1,6 +1,6 @@
 import { CopyBlock, PokemonPreviewLink, RouteActionButton, RouteActionLink, SectionCard, StatCard } from '@shared/ui'
 
-import type { HomePageModel } from './useHomePageModel'
+import type { HomePageModel } from '@app/routes/home/useHomePageModel'
 
 type HomePageViewProps = HomePageModel
 

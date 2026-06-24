@@ -2,14 +2,14 @@
 
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
 
-import { BattleLabPage } from './routes/BattleLabPage'
-import { HomePage } from './routes/HomePage'
-import { NotFoundPage } from './routes/NotFoundPage'
-import { PokedexPage } from './routes/PokedexPage'
-import { PokemonIntelPage } from './routes/PokemonIntelPage'
-import { PokemonSpotlightPage } from './routes/PokemonSpotlightPage'
-import { RootLayout } from './routes/RootLayout'
-import { battleLabSearchValidator, pokemonSearchValidator } from './routes/searchValidators'
+import { BattleLabPage } from '@app/routes/BattleLabPage'
+import { HomePage } from '@app/routes/HomePage'
+import { NotFoundPage } from '@app/routes/NotFoundPage'
+import { PokedexPage } from '@app/routes/PokedexPage'
+import { PokemonIntelPage } from '@app/routes/PokemonIntelPage'
+import { PokemonSpotlightPage } from '@app/routes/PokemonSpotlightPage'
+import { RootLayout } from '@app/routes/RootLayout'
+import { battleLabSearchValidator, pokemonSearchValidator } from '@app/routes/searchValidators'
 
 const rootRoute = createRootRoute({
   component: RootLayout,

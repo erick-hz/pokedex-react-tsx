@@ -2,7 +2,7 @@ import type {
   PokemonDetails,
   PokemonListResponse,
   PokemonSpeciesData,
-} from '../model/types'
+} from '@features/pokemon/model/types'
 
 const BASE_URL = 'https://pokeapi.co/api/v2'
 

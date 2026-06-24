@@ -5,7 +5,7 @@ import type {
   PokemonCompanionDataResponse,
   PokemonEvolutionChainResponse,
   PokemonSpeciesResponse,
-} from '../model/types'
+} from '@features/public-apis/model/types'
 
 type LocalizedNameResponse = {
   names: Array<{

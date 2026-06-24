@@ -1,9 +1,9 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
-import en from '../locales/en.json'
-import es from '../locales/es.json'
-import ja from '../locales/ja.json'
+import en from '@shared/locales/en.json'
+import es from '@shared/locales/es.json'
+import ja from '@shared/locales/ja.json'
 
 const savedLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('language') : null
 
