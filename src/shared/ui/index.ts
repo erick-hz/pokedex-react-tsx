@@ -1,6 +1,6 @@
-export { default as PokemonHoloCard } from './PokemonHoloCard'
-export { default as SectionCard } from './SectionCard'
-export { default as StatCard } from './StatCard'
-export { default as CopyBlock } from './CopyBlock'
-export { default as PokemonPreviewLink } from './PokemonPreviewLink'
-export { RouteActionButton, RouteActionLink, RoutePillButton } from './RouteActions'
+export { default as PokemonHoloCard } from './PokemonHoloCard';
+export { default as SectionCard } from './SectionCard';
+export { default as StatCard } from './StatCard';
+export { default as CopyBlock } from './CopyBlock';
+export { default as PokemonPreviewLink } from './PokemonPreviewLink';
+export { RouteActionButton, RouteActionLink, RoutePillButton } from './RouteActions';

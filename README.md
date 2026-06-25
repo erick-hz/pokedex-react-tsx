@@ -32,6 +32,9 @@ App URL: http://localhost:5173
 - npm run build: production build
 - npm run preview: preview build
 - npm run lint: run ESLint
+- npm run lint:fix: run ESLint with auto-fixes
+- npm run format: format files with Prettier
+- npm run format:check: verify formatting without changing files
 
 ## Project Structure
 
@@ -49,6 +52,12 @@ If you want to contribute, open your PR using this template:
 docs/PULL_REQUEST_TEMPLATE.md
 
 Please complete the checklist and run `npm run lint` and `npm run build` before submitting.
+
+For style consistency across the team:
+
+- Use the recommended VS Code extensions from `.vscode/extensions.json`
+- Keep `editor.formatOnSave` enabled
+- Run `npm run format:check` before opening a PR
 
 ## External API
 

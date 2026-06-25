@@ -1,8 +1,15 @@
-import { CopyBlock, PokemonPreviewLink, RouteActionButton, RouteActionLink, SectionCard, StatCard } from '@shared/ui'
+import {
+  CopyBlock,
+  PokemonPreviewLink,
+  RouteActionButton,
+  RouteActionLink,
+  SectionCard,
+  StatCard,
+} from '@shared/ui';
 
-import type { HomePageModel } from '@app/routes/home/useHomePageModel'
+import type { HomePageModel } from '@app/routes/home/useHomePageModel';
 
-type HomePageViewProps = HomePageModel
+type HomePageViewProps = HomePageModel;
 
 export function HomePageView({
   t,
@@ -42,7 +49,11 @@ export function HomePageView({
         <p className="route-recommend-chip">{recommendationText}</p>
 
         {activeSlide ? (
-          <div className="route-carousel" role="region" aria-label={t('homeDynamic.carousel.region')}>
+          <div
+            className="route-carousel"
+            role="region"
+            aria-label={t('homeDynamic.carousel.region')}
+          >
             <article className="route-carousel-card">
               <div className="route-carousel-media">
                 {activeSlide.pokemon?.image ? (
@@ -69,15 +80,24 @@ export function HomePageView({
             </article>
 
             <div className="route-carousel-controls">
-              <div className="route-carousel-dots" role="tablist" aria-label={t('homeDynamic.carousel.pagination')}>
+              <div
+                className="route-carousel-dots"
+                role="tablist"
+                aria-label={t('homeDynamic.carousel.pagination')}
+              >
                 {carouselSlides.map((slide, index) => (
                   <button
                     key={slide.key}
                     type="button"
                     role="tab"
                     aria-selected={carouselIndex === index}
-                    aria-label={t('homeDynamic.carousel.slide', { current: index + 1, total: carouselSlides.length })}
-                    className={['route-carousel-dot', carouselIndex === index ? 'active' : ''].filter(Boolean).join(' ')}
+                    aria-label={t('homeDynamic.carousel.slide', {
+                      current: index + 1,
+                      total: carouselSlides.length,
+                    })}
+                    className={['route-carousel-dot', carouselIndex === index ? 'active' : '']
+                      .filter(Boolean)
+                      .join(' ')}
                     onClick={() => setCarouselIndex(index)}
                   />
                 ))}
@@ -103,8 +123,8 @@ export function HomePageView({
               placeholderClassName="route-photo-card__placeholder"
               labelClassName="route-photo-card__label"
               onClick={() => {
-                updateRouteActivity('spotlight')
-                pushRecentSpotlight(pokemon.name)
+                updateRouteActivity('spotlight');
+                pushRecentSpotlight(pokemon.name);
               }}
             />
           ))}
@@ -150,8 +170,8 @@ export function HomePageView({
                 params={{ pokemonName: effectiveFeaturedPokemon }}
                 className="route-cta-muted"
                 onClick={() => {
-                  updateRouteActivity('spotlight')
-                  pushRecentSpotlight(effectiveFeaturedPokemon)
+                  updateRouteActivity('spotlight');
+                  pushRecentSpotlight(effectiveFeaturedPokemon);
                 }}
               >
                 {t('homeDynamic.openSpotlight')}
@@ -159,16 +179,37 @@ export function HomePageView({
             </div>
 
             <div className="route-metric-row">
-              <StatCard label={t('homeDynamic.metrics.loaded')} value={spotlightCandidates.length} className="route-metric-card" />
-              <StatCard label={t('homeDynamic.metrics.language')} value={t(i18n.language.startsWith('es') ? 'spanish' : i18n.language.startsWith('ja') ? 'japanese' : 'english')} className="route-metric-card" />
-              <StatCard label={t('homeDynamic.metrics.routes')} value="4" className="route-metric-card" />
+              <StatCard
+                label={t('homeDynamic.metrics.loaded')}
+                value={spotlightCandidates.length}
+                className="route-metric-card"
+              />
+              <StatCard
+                label={t('homeDynamic.metrics.language')}
+                value={t(
+                  i18n.language.startsWith('es')
+                    ? 'spanish'
+                    : i18n.language.startsWith('ja')
+                      ? 'japanese'
+                      : 'english',
+                )}
+                className="route-metric-card"
+              />
+              <StatCard
+                label={t('homeDynamic.metrics.routes')}
+                value="4"
+                className="route-metric-card"
+              />
             </div>
           </div>
         </div>
       </SectionCard>
 
       <section className="route-bottom-grid">
-        <SectionCard eyebrow={t('homeDynamic.missionEyebrow')} title={t('homeDynamic.missionTitle')}>
+        <SectionCard
+          eyebrow={t('homeDynamic.missionEyebrow')}
+          title={t('homeDynamic.missionTitle')}
+        >
           <div className="route-tip-card">
             <CopyBlock>{t(tipKeys[tipIndex])}</CopyBlock>
           </div>
@@ -177,21 +218,25 @@ export function HomePageView({
             <article>
               <p className="route-mission-label">{t('homeDynamic.recentTitle')}</p>
               <div className="route-recent-grid">
-                {recentSpotlightItems.length > 0 ? recentSpotlightItems.map((pokemon) => (
-                  <PokemonPreviewLink
-                    key={pokemon.name}
-                    to="/pokedex/$pokemonName"
-                    params={{ pokemonName: pokemon.name }}
-                    className="route-recent-card"
-                    name={pokemon.displayName ?? pokemon.name}
-                    image={pokemon.image}
-                    placeholder={t('noImage')}
-                    imageClassName="route-recent-card__image"
-                    labelClassName="route-recent-card__label"
-                    placeholderClassName="route-recent-card__placeholder"
-                    onClick={() => updateRouteActivity('spotlight')}
-                  />
-                )) : <span className="route-mission-empty">{t('homeDynamic.recentEmpty')}</span>}
+                {recentSpotlightItems.length > 0 ? (
+                  recentSpotlightItems.map((pokemon) => (
+                    <PokemonPreviewLink
+                      key={pokemon.name}
+                      to="/pokedex/$pokemonName"
+                      params={{ pokemonName: pokemon.name }}
+                      className="route-recent-card"
+                      name={pokemon.displayName ?? pokemon.name}
+                      image={pokemon.image}
+                      placeholder={t('noImage')}
+                      imageClassName="route-recent-card__image"
+                      labelClassName="route-recent-card__label"
+                      placeholderClassName="route-recent-card__placeholder"
+                      onClick={() => updateRouteActivity('spotlight')}
+                    />
+                  ))
+                ) : (
+                  <span className="route-mission-empty">{t('homeDynamic.recentEmpty')}</span>
+                )}
               </div>
             </article>
 
@@ -202,16 +247,16 @@ export function HomePageView({
                 tone="primary"
                 onClick={() => {
                   if (recommendedRouteKey === 'pokedex') {
-                    goToRoute('/pokedex', 'pokedex')
-                    return
+                    goToRoute('/pokedex', 'pokedex');
+                    return;
                   }
 
                   if (recommendedRouteKey === 'intel') {
-                    goToRoute('/intel', 'intel')
-                    return
+                    goToRoute('/intel', 'intel');
+                    return;
                   }
 
-                  goToRoute('/battle-lab', 'battleLab')
+                  goToRoute('/battle-lab', 'battleLab');
                 }}
               >
                 {t('homeDynamic.followRecommendation')}
@@ -220,7 +265,11 @@ export function HomePageView({
           </div>
         </SectionCard>
 
-        <SectionCard eyebrow={t('homeDynamic.github.eyebrow')} title={t('homeDynamic.github.title')} className="github-panel-card">
+        <SectionCard
+          eyebrow={t('homeDynamic.github.eyebrow')}
+          title={t('homeDynamic.github.title')}
+          className="github-panel-card"
+        >
           <div className="github-panel-head">
             <img
               src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
@@ -232,7 +281,9 @@ export function HomePageView({
             <div className="github-panel-meta">
               <strong>{String(githubRepoQuery.data?.full_name ?? 'pokedex-react-tsx')}</strong>
               <a
-                href={String(githubRepoQuery.data?.html_url ?? 'https://github.com/erick-hz/pokedex-react-tsx')}
+                href={String(
+                  githubRepoQuery.data?.html_url ?? 'https://github.com/erick-hz/pokedex-react-tsx',
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="route-cta route-cta-muted"
@@ -301,7 +352,9 @@ export function HomePageView({
           {githubMetadata.topics.length > 0 && (
             <div className="github-topic-list" aria-label={t('homeDynamic.github.topics')}>
               {githubMetadata.topics.map((topic) => (
-                <span key={topic} className="github-topic-chip">#{topic}</span>
+                <span key={topic} className="github-topic-chip">
+                  #{topic}
+                </span>
               ))}
             </div>
           )}
@@ -314,5 +367,5 @@ export function HomePageView({
         </SectionCard>
       </section>
     </section>
-  )
+  );
 }

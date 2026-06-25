@@ -1,13 +1,13 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import { PokemonDetail } from '@features/pokemon'
-import { PublicApisDashboard } from '@features/public-apis'
-import { RouteActionLink } from '@shared/ui'
-import { useParams } from '@tanstack/react-router'
+import { PokemonDetail } from '@features/pokemon';
+import { PublicApisDashboard } from '@features/public-apis';
+import { RouteActionLink } from '@shared/ui';
+import { useParams } from '@tanstack/react-router';
 
 export function PokemonSpotlightPage() {
-  const { t } = useTranslation()
-  const { pokemonName } = useParams({ from: '/pokedex/$pokemonName' })
+  const { t } = useTranslation();
+  const { pokemonName } = useParams({ from: '/pokedex/$pokemonName' });
 
   return (
     <section className="section-stack route-spotlight-stack">
@@ -23,5 +23,5 @@ export function PokemonSpotlightPage() {
       <PokemonDetail selectedPokemon={pokemonName} />
       <PublicApisDashboard selectedPokemon={pokemonName} />
     </section>
-  )
+  );
 }

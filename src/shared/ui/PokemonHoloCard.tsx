@@ -1,23 +1,19 @@
-import type { CSSProperties } from 'react'
+import type { CSSProperties } from 'react';
 
 type PokemonHoloCardProps = {
-  image: string
-  name: string
-  className?: string
-}
+  image: string;
+  name: string;
+  className?: string;
+};
 
 type HoloCardStyle = CSSProperties & {
-  '--front': string
-}
+  '--front': string;
+};
 
-export default function PokemonHoloCard({
-  image,
-  name,
-  className,
-}: PokemonHoloCardProps) {
+export default function PokemonHoloCard({ image, name, className }: PokemonHoloCardProps) {
   const cardStyle: HoloCardStyle = {
     '--front': `url("${image}")`,
-  }
+  };
 
   return (
     <div className={`pokemon-card-shell ${className ?? ''}`.trim()}>
@@ -32,5 +28,5 @@ export default function PokemonHoloCard({
         />
       </div>
     </div>
-  )
+  );
 }

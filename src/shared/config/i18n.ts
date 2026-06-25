@@ -1,11 +1,12 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-import en from '@shared/locales/en.json'
-import es from '@shared/locales/es.json'
-import ja from '@shared/locales/ja.json'
+import en from '@shared/locales/en.json';
+import es from '@shared/locales/es.json';
+import ja from '@shared/locales/ja.json';
 
-const savedLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('language') : null
+const savedLanguage =
+  typeof window !== 'undefined' ? window.localStorage.getItem('language') : null;
 
 void i18n.use(initReactI18next).init({
   resources: {
@@ -18,6 +19,6 @@ void i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
-})
+});
 
-export default i18n
+export default i18n;
