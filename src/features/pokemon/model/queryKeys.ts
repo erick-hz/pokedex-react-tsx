@@ -4,4 +4,4 @@ export const pokemonKeys = {
   list: (language: string) => [...pokemonKeys.lists(), language] as const,
   details: () => [...pokemonKeys.all, 'detail'] as const,
   detail: (name: string, language: string) => [...pokemonKeys.details(), name, language] as const,
-}
+};

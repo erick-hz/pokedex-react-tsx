@@ -1,16 +1,16 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
-import { SectionCard } from '@shared/ui'
+import { SectionCard } from '@shared/ui';
 
 type PublicApiCardProps = {
-  eyebrow: string
-  title: string
-  description: string
-  loadingLabel: string
-  isLoading: boolean
-  error: string | null
-  children: ReactNode
-}
+  eyebrow: string;
+  title: string;
+  description: string;
+  loadingLabel: string;
+  isLoading: boolean;
+  error: string | null;
+  children: ReactNode;
+};
 
 export function PublicApiCard({
   eyebrow,
@@ -22,11 +22,7 @@ export function PublicApiCard({
   children,
 }: PublicApiCardProps) {
   return (
-    <SectionCard
-      eyebrow={eyebrow}
-      title={title}
-      className="public-api-card"
-    >
+    <SectionCard eyebrow={eyebrow} title={title} className="public-api-card">
       <div className="public-api-card__body">
         <p className="public-api-card__description">{description}</p>
 
@@ -36,5 +32,5 @@ export function PublicApiCard({
         </div>
       </div>
     </SectionCard>
-  )
+  );
 }

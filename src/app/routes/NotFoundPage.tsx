@@ -1,9 +1,9 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import { RouteActionLink, SectionCard } from '@shared/ui'
+import { RouteActionLink, SectionCard } from '@shared/ui';
 
 export function NotFoundPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <section className="section-stack">
@@ -13,11 +13,9 @@ export function NotFoundPage() {
           <RouteActionLink to="/" tone="primary">
             {t('routes.notFound.backHome')}
           </RouteActionLink>
-          <RouteActionLink to="/pokedex">
-            {t('routes.notFound.openPokedex')}
-          </RouteActionLink>
+          <RouteActionLink to="/pokedex">{t('routes.notFound.openPokedex')}</RouteActionLink>
         </div>
       </SectionCard>
     </section>
-  )
+  );
 }

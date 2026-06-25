@@ -1,89 +1,83 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-type LanguageCode = 'en' | 'es' | 'ja'
+type LanguageCode = 'en' | 'es' | 'ja';
 
 type LanguageOption = {
-  code: LanguageCode
-  labelKey: 'english' | 'spanish' | 'japanese'
-  flag: string
-}
+  code: LanguageCode;
+  labelKey: 'english' | 'spanish' | 'japanese';
+  flag: string;
+};
 
 const LANGUAGES: readonly LanguageOption[] = [
   { code: 'en', labelKey: 'english', flag: 'https://flagcdn.com/w40/us.png' },
   { code: 'es', labelKey: 'spanish', flag: 'https://flagcdn.com/w40/es.png' },
   { code: 'ja', labelKey: 'japanese', flag: 'https://flagcdn.com/w40/jp.png' },
-] as const
+] as const;
 
 export default function LanguageSwitcher() {
-  const { i18n, t } = useTranslation()
+  const { i18n, t } = useTranslation();
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const menuId = useId()
+  const menuId = useId();
 
-  const currentCode = (i18n.resolvedLanguage?.split('-')[0] ??
-    'en') as LanguageCode
+  const currentCode = (i18n.resolvedLanguage?.split('-')[0] ?? 'en') as LanguageCode;
 
   const currentLanguage = useMemo(
-    () =>
-      LANGUAGES.find((language) => language.code === currentCode) ??
-      LANGUAGES[0],
-    [currentCode]
-  )
+    () => LANGUAGES.find((language) => language.code === currentCode) ?? LANGUAGES[0],
+    [currentCode],
+  );
 
   const closeMenu = useCallback(() => {
-    setIsOpen(false)
-  }, [])
+    setIsOpen(false);
+  }, []);
 
   const toggleMenu = useCallback(() => {
-    setIsOpen((prev) => !prev)
-  }, [])
+    setIsOpen((prev) => !prev);
+  }, []);
 
   const changeLanguage = useCallback(
     async (language: LanguageCode) => {
       if (language === currentCode) {
-        closeMenu()
-        return
+        closeMenu();
+        return;
       }
 
-      await i18n.changeLanguage(language)
-      window.localStorage.setItem('language', language)
-      closeMenu()
+      await i18n.changeLanguage(language);
+      window.localStorage.setItem('language', language);
+      closeMenu();
 
-      buttonRef.current?.focus()
+      buttonRef.current?.focus();
     },
-    [closeMenu, currentCode, i18n]
-  )
+    [closeMenu, currentCode, i18n],
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        closeMenu()
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        closeMenu();
       }
-    }
+    };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        closeMenu()
-        buttonRef.current?.focus()
+        closeMenu();
+        buttonRef.current?.focus();
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [closeMenu])
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [closeMenu]);
 
   return (
     <div ref={dropdownRef} className="language-dropdown">
@@ -107,9 +101,7 @@ export default function LanguageSwitcher() {
           className="language-dropdown-flag"
         />
 
-        <span className="language-dropdown-text">
-          {t(currentLanguage.labelKey)}
-        </span>
+        <span className="language-dropdown-text">{t(currentLanguage.labelKey)}</span>
       </button>
 
       {isOpen && (
@@ -120,7 +112,7 @@ export default function LanguageSwitcher() {
           className="language-dropdown-menu"
         >
           {LANGUAGES.map((language) => {
-            const isSelected = currentCode === language.code
+            const isSelected = currentCode === language.code;
 
             return (
               <button
@@ -128,9 +120,7 @@ export default function LanguageSwitcher() {
                 type="button"
                 role="menuitemradio"
                 aria-checked={isSelected}
-                className={`language-dropdown-option ${
-                  isSelected ? 'active' : ''
-                }`}
+                className={`language-dropdown-option ${isSelected ? 'active' : ''}`}
                 onClick={() => void changeLanguage(language.code)}
               >
                 <img
@@ -145,10 +135,10 @@ export default function LanguageSwitcher() {
 
                 <span>{t(language.labelKey)}</span>
               </button>
-            )
+            );
           })}
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,13 +1,13 @@
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
-import { PokemonList } from '@features/pokemon'
-import { PublicApisDashboard } from '@features/public-apis'
+import { PokemonList } from '@features/pokemon';
+import { PublicApisDashboard } from '@features/public-apis';
 
 export function PokemonIntelPage() {
-  const navigate = useNavigate({ from: '/intel' })
-  const search = useSearch({ from: '/intel' })
+  const navigate = useNavigate({ from: '/intel' });
+  const search = useSearch({ from: '/intel' });
 
-  const selectedPokemon = search.pokemon ?? 'eevee'
+  const selectedPokemon = search.pokemon ?? 'eevee';
 
   return (
     <section className="section-stack route-intel-grid">
@@ -23,5 +23,5 @@ export function PokemonIntelPage() {
 
       <PublicApisDashboard selectedPokemon={selectedPokemon} />
     </section>
-  )
+  );
 }

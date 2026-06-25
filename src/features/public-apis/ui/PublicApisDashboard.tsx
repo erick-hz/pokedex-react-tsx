@@ -1,33 +1,33 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import { usePokemonBattleIntel, usePokemonCompanionData } from '@features/public-apis/model/hooks'
+import { usePokemonBattleIntel, usePokemonCompanionData } from '@features/public-apis/model/hooks';
 
-import { PublicApiCard } from '@features/public-apis/ui/PublicApiCard'
+import { PublicApiCard } from '@features/public-apis/ui/PublicApiCard';
 
 type PublicApisDashboardProps = {
-  selectedPokemon: string
-}
+  selectedPokemon: string;
+};
 
 function formatList(items: string[]) {
-  return items.length > 0 ? items.join(' · ') : ''
+  return items.length > 0 ? items.join(' · ') : '';
 }
 
 function formatStatLabel(label: string, value: string | number) {
-  return `${label}: ${value}`
+  return `${label}: ${value}`;
 }
 
 export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const companionQuery = usePokemonCompanionData(selectedPokemon)
-  const battleQuery = usePokemonBattleIntel(selectedPokemon)
+  const companionQuery = usePokemonCompanionData(selectedPokemon);
+  const battleQuery = usePokemonBattleIntel(selectedPokemon);
 
-  const species = companionQuery.data?.species
-  const flavorText = companionQuery.data?.flavorText ?? ''
-  const genus = companionQuery.data?.genus ?? selectedPokemon
-  const habitat = companionQuery.data?.habitatLabel ?? t('publicApis.unknown')
-  const generation = companionQuery.data?.generationLabel ?? t('publicApis.unknown')
-  const color = companionQuery.data?.colorLabel ?? t('publicApis.unknown')
+  const species = companionQuery.data?.species;
+  const flavorText = companionQuery.data?.flavorText ?? '';
+  const genus = companionQuery.data?.genus ?? selectedPokemon;
+  const habitat = companionQuery.data?.habitatLabel ?? t('publicApis.unknown');
+  const generation = companionQuery.data?.generationLabel ?? t('publicApis.unknown');
+  const color = companionQuery.data?.colorLabel ?? t('publicApis.unknown');
 
   return (
     <section className="public-apis-grid" aria-label={t('publicApis.title')}>
@@ -39,7 +39,9 @@ export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProp
         isLoading={companionQuery.isLoading}
         error={companionQuery.error ? t('publicApis.error') : null}
       >
-        <blockquote className="public-api-quote">{flavorText.replaceAll(/\s+/g, ' ').trim()}</blockquote>
+        <blockquote className="public-api-quote">
+          {flavorText.replaceAll(/\s+/g, ' ').trim()}
+        </blockquote>
         <p className="public-api-source">{genus}</p>
         <p className="public-api-source">{formatStatLabel(t('publicApis.habitat'), habitat)}</p>
       </PublicApiCard>
@@ -55,7 +57,9 @@ export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProp
         <p className="public-api-highlight">
           {companionQuery.data?.evolutionLine.join(' → ') ?? t('publicApis.loadingLine')}
         </p>
-        <p className="public-api-source">{formatStatLabel(t('publicApis.generation'), generation)}</p>
+        <p className="public-api-source">
+          {formatStatLabel(t('publicApis.generation'), generation)}
+        </p>
       </PublicApiCard>
 
       <PublicApiCard
@@ -68,9 +72,18 @@ export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProp
       >
         <p className="public-api-highlight">{formatList(battleQuery.data?.types ?? [])}</p>
         <div className="public-api-chip-list">
-          <span className="public-api-chip">{t('publicApis.weakTo')}: {formatList(battleQuery.data?.weaknesses ?? []) || t('publicApis.none')}</span>
-          <span className="public-api-chip">{t('publicApis.resists')}: {formatList(battleQuery.data?.resistances ?? []) || t('publicApis.none')}</span>
-          <span className="public-api-chip">{t('publicApis.immuneTo')}: {formatList(battleQuery.data?.immunities ?? []) || t('publicApis.none')}</span>
+          <span className="public-api-chip">
+            {t('publicApis.weakTo')}:{' '}
+            {formatList(battleQuery.data?.weaknesses ?? []) || t('publicApis.none')}
+          </span>
+          <span className="public-api-chip">
+            {t('publicApis.resists')}:{' '}
+            {formatList(battleQuery.data?.resistances ?? []) || t('publicApis.none')}
+          </span>
+          <span className="public-api-chip">
+            {t('publicApis.immuneTo')}:{' '}
+            {formatList(battleQuery.data?.immunities ?? []) || t('publicApis.none')}
+          </span>
         </div>
       </PublicApiCard>
 
@@ -83,7 +96,10 @@ export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProp
         error={companionQuery.error ? t('publicApis.error') : null}
       >
         <p className="public-api-source">
-          {formatStatLabel(t('publicApis.captureRate'), species?.capture_rate ?? t('publicApis.unknown'))}
+          {formatStatLabel(
+            t('publicApis.captureRate'),
+            species?.capture_rate ?? t('publicApis.unknown'),
+          )}
         </p>
         <p className="public-api-source">{formatStatLabel(t('publicApis.color'), color)}</p>
         <p className="public-api-source">
@@ -94,5 +110,5 @@ export function PublicApisDashboard({ selectedPokemon }: PublicApisDashboardProp
         </p>
       </PublicApiCard>
     </section>
-  )
+  );
 }

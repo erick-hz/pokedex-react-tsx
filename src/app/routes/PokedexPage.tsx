@@ -1,15 +1,15 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
-import { PokemonDetail, PokemonList } from '@features/pokemon'
-import { RouteActionLink } from '@shared/ui'
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { PokemonDetail, PokemonList } from '@features/pokemon';
+import { RouteActionLink } from '@shared/ui';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
 export function PokedexPage() {
-  const { t } = useTranslation()
-  const navigate = useNavigate({ from: '/pokedex' })
-  const search = useSearch({ from: '/pokedex' })
+  const { t } = useTranslation();
+  const navigate = useNavigate({ from: '/pokedex' });
+  const search = useSearch({ from: '/pokedex' });
 
-  const selectedPokemon = search.pokemon ?? 'pikachu'
+  const selectedPokemon = search.pokemon ?? 'pikachu';
 
   return (
     <>
@@ -40,5 +40,5 @@ export function PokedexPage() {
         </RouteActionLink>
       </section>
     </>
-  )
+  );
 }
