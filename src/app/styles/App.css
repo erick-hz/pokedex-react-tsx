@@ -1300,6 +1300,44 @@ body {
   box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
 }
 
+.pokemon-pagination {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pokemon-pagination-button {
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text);
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pokemon-pagination-button:hover {
+  background: var(--surface-muted);
+  transform: translateY(-1px);
+}
+
+.pokemon-pagination-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pokemon-pagination-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
 /* Tarjeta del Pokémon */
 
 .pokemon-card-visual {

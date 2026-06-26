@@ -156,6 +156,12 @@
   },
   "selectPokemon": "ポケモンを選択",
   "loadingPokemon": "ポケモンを読み込み中...",
+  "pokemonPagination": {
+    "label": "ポケモン一覧ページネーション",
+    "prev": "前へ",
+    "next": "次へ",
+    "page": "{{total}}ページ中{{current}}ページ"
+  },
   "loadingDetails": "詳細を読み込み中...",
   "profile": "プロフィール",
   "noImage": "画像なし",

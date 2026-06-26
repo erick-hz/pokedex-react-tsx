@@ -156,6 +156,12 @@
   },
   "selectPokemon": "Select a Pokémon",
   "loadingPokemon": "Loading Pokémon...",
+  "pokemonPagination": {
+    "label": "Pokemon list pagination",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
   "loadingDetails": "Loading details...",
   "profile": "Profile",
   "noImage": "No image",
