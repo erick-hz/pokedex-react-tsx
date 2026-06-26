@@ -682,6 +682,99 @@ body {
   gap: 10px;
 }
 
+.route-search-row {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.route-search-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.route-search-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.route-search-input {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text);
+  padding: 10px 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.route-search-input::placeholder {
+  color: var(--muted);
+}
+
+.route-search-input:focus {
+  border-color: rgba(220, 38, 38, 0.4);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.route-search-clear {
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text);
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.route-search-clear:hover {
+  background: var(--surface-muted);
+  transform: translateY(-1px);
+}
+
+.route-search-clear:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.route-search-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.route-search-empty {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.route-gallery-pager {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.route-gallery-page-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  text-align: center;
+}
+
 .route-photo-card {
   display: grid;
   gap: 8px;
@@ -905,6 +998,99 @@ body {
 
 .github-homepage-link {
   margin-top: 10px;
+}
+
+.github-commit-section {
+  margin-top: 12px;
+}
+
+.github-commit-list {
+  display: grid;
+  gap: 8px;
+}
+
+.github-commit-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.github-commit-link,
+.github-commit-title {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.github-commit-link:hover {
+  color: var(--primary-hover);
+}
+
+.github-commit-meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.pokemon-tcg-panel-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(165deg, var(--surface), var(--surface-alt));
+}
+
+.pokemon-tcg-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pokemon-tcg-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+}
+
+.pokemon-tcg-image,
+.pokemon-tcg-placeholder {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.pokemon-tcg-image {
+  object-fit: cover;
+}
+
+.pokemon-tcg-placeholder {
+  min-height: 140px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.pokemon-tcg-meta {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+
+.pokemon-tcg-meta strong {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.pokemon-tcg-meta span {
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 .route-recent-grid {
@@ -1351,6 +1537,16 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .route-search-control {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .route-search-clear {
+    width: fit-content;
+    align-self: flex-start;
+  }
+
   .route-live-grid {
     grid-template-columns: 1fr;
   }
@@ -1364,6 +1560,10 @@ body {
   }
 
   .public-apis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-tcg-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1406,6 +1606,10 @@ body {
 
   .panel {
     padding: 20px;
+  }
+
+  .pokemon-tcg-item {
+    grid-template-columns: 1fr;
   }
 
   .pokemon-image-card {

@@ -88,7 +88,33 @@
       "noDescription": "Sin descripción del repositorio.",
       "none": "Ninguno",
       "unknown": "Desconocido",
-      "payload": "Payload completo de API"
+      "payload": "Payload completo de API",
+      "recentCommits": "Commits recientes",
+      "loadingCommits": "Cargando actividad de commits...",
+      "errorCommits": "No se pudieron cargar los commits.",
+      "noCommits": "No hay commits disponibles.",
+      "commitBy": "{{author}} · {{date}}",
+      "commitUnknown": "Commit sin titulo"
+    },
+    "tcg": {
+      "eyebrow": "API de Pokemon TCG",
+      "title": "Cartas para {{name}}",
+      "subtitle": "Datos de cartas en vivo desde una segunda API publica de Pokemon para ampliar el contexto del dashboard.",
+      "carousel": {
+        "region": "Carrusel de cartas TCG",
+        "open": "Abrir Pokemon",
+        "pagination": "Paginacion del carrusel TCG",
+        "slide": "Carta {{current}} de {{total}}",
+        "subtitle": "Carta destacada",
+        "meta": "Set: {{set}} · Rareza: {{rarity}} · HP: {{hp}}"
+      },
+      "set": "Set",
+      "rarity": "Rareza",
+      "hp": "HP",
+      "loading": "Cargando datos de cartas...",
+      "error": "No se pudieron cargar datos de Pokemon TCG.",
+      "empty": "No se encontraron cartas para este Pokemon.",
+      "unknown": "Desconocido"
     },
     "recentTitle": "Destacados recientes",
     "recentEmpty": "Aún no hay destacados recientes.",
@@ -109,6 +135,18 @@
       "1": "Tip: el Laboratorio funciona mejor con rivales de tipo diferente.",
       "2": "Tip: cambia de idioma y compara etiquetas de tipos para aprender más rápido.",
       "3": "Tip: usa Destacado para enfoque y vuelve a Pokedex para continuar el flujo."
+    },
+    "search": {
+      "label": "Buscar Pokemon",
+      "placeholder": "Escribe un nombre de Pokemon",
+      "clear": "Limpiar",
+      "results": "Mostrando {{count}} de {{total}}",
+      "empty": "No se encontro Pokemon para \"{{query}}\".",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "page": "Pagina {{current}} de {{total}}",
+      "gotoPage": "Ir a la pagina {{page}}",
+      "paginationLabel": "Paginacion de la galeria de Pokemon"
     },
     "metrics": {
       "loaded": "Cargados",

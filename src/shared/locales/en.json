@@ -88,7 +88,33 @@
       "noDescription": "No repository description.",
       "none": "None",
       "unknown": "Unknown",
-      "payload": "Full API payload"
+      "payload": "Full API payload",
+      "recentCommits": "Recent commits",
+      "loadingCommits": "Loading commit activity...",
+      "errorCommits": "Could not load commits.",
+      "noCommits": "No commits available.",
+      "commitBy": "{{author}} · {{date}}",
+      "commitUnknown": "Untitled commit"
+    },
+    "tcg": {
+      "eyebrow": "Pokemon TCG API",
+      "title": "Trading Cards for {{name}}",
+      "subtitle": "Live card data from a second public Pokemon API to expand your dashboard context.",
+      "carousel": {
+        "region": "TCG card carousel",
+        "open": "Open Pokemon",
+        "pagination": "TCG carousel pagination",
+        "slide": "Card {{current}} of {{total}}",
+        "subtitle": "Featured trading card",
+        "meta": "Set: {{set}} · Rarity: {{rarity}} · HP: {{hp}}"
+      },
+      "set": "Set",
+      "rarity": "Rarity",
+      "hp": "HP",
+      "loading": "Loading card data...",
+      "error": "Could not load Pokemon TCG data.",
+      "empty": "No cards found for this Pokemon.",
+      "unknown": "Unknown"
     },
     "recentTitle": "Recently opened spotlight",
     "recentEmpty": "No recent spotlight yet.",
@@ -109,6 +135,18 @@
       "1": "Tip: Battle Lab works best when your rival is from a different type family.",
       "2": "Tip: Switch language and compare localized type labels for faster learning.",
       "3": "Tip: Use Spotlight for focused review, then return to Pokedex for queue flow."
+    },
+    "search": {
+      "label": "Search Pokemon",
+      "placeholder": "Type a Pokemon name",
+      "clear": "Clear",
+      "results": "Showing {{count}} of {{total}}",
+      "empty": "No Pokemon found for \"{{query}}\".",
+      "prev": "Previous",
+      "next": "Next",
+      "page": "Page {{current}} of {{total}}",
+      "gotoPage": "Go to page {{page}}",
+      "paginationLabel": "Pokemon gallery pagination"
     },
     "metrics": {
       "loaded": "Loaded",

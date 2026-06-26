@@ -15,12 +15,16 @@ export function HomePageView({
   t,
   i18n,
   spotlightCandidates,
-  galleryItems,
+  filteredGalleryItems,
+  paginatedGalleryItems,
+  gallerySearchTerm,
+  galleryPage,
+  totalGalleryPages,
+  hasGallerySearch,
   selectedSpotlight,
   recentSpotlightItems,
   tipKeys,
   tipIndex,
-  routeActivity,
   recommendationText,
   recommendedRouteKey,
   activeSlide,
@@ -31,14 +35,20 @@ export function HomePageView({
   spotlightImage,
   effectiveFeaturedPokemon,
   githubRepoQuery,
+  githubCommitsQuery,
   githubStats,
   githubMetadata,
+  githubRecentCommits,
+  pokemonTcgQuery,
   formatRepoDate,
   updateRouteActivity,
   pushRecentSpotlight,
   goToRoute,
   randomizeSpotlight,
   openCarouselPokemonInfo,
+  goToPreviousGalleryPage,
+  goToNextGalleryPage,
+  setGallerySearchTerm,
   setCarouselIndex,
 }: HomePageViewProps) {
   return (
@@ -48,18 +58,22 @@ export function HomePageView({
 
         <p className="route-recommend-chip">{recommendationText}</p>
 
-        {activeSlide ? (
+        {pokemonTcgQuery.isLoading ? (
+          <p className="route-home-copy">{t('homeDynamic.tcg.loading')}</p>
+        ) : pokemonTcgQuery.isError ? (
+          <p className="route-home-copy">{t('homeDynamic.tcg.error')}</p>
+        ) : activeSlide ? (
           <div
             className="route-carousel"
             role="region"
-            aria-label={t('homeDynamic.carousel.region')}
+            aria-label={t('homeDynamic.tcg.carousel.region')}
           >
             <article className="route-carousel-card">
               <div className="route-carousel-media">
-                {activeSlide.pokemon?.image ? (
+                {activeSlide.card.image ? (
                   <img
-                    src={activeSlide.pokemon.image}
-                    alt={activeSlide.pokemon.displayName ?? activeSlide.pokemon.name}
+                    src={activeSlide.card.image}
+                    alt={activeSlide.title}
                     className="route-carousel-image"
                     loading="lazy"
                   />
@@ -71,10 +85,16 @@ export function HomePageView({
               <div className="route-carousel-body">
                 <strong>{activeSlide.title}</strong>
                 <p>{activeSlide.subtitle}</p>
-                <em>{t('homeDynamic.launches', { count: routeActivity[activeSlide.key] })}</em>
+                <em>
+                  {t('homeDynamic.tcg.carousel.meta', {
+                    set: activeSlide.card.setName,
+                    rarity: activeSlide.card.rarity,
+                    hp: activeSlide.card.hp,
+                  })}
+                </em>
 
                 <RouteActionButton type="button" tone="primary" onClick={openCarouselPokemonInfo}>
-                  {t('homeDynamic.carousel.open')}
+                  {t('homeDynamic.tcg.carousel.open')}
                 </RouteActionButton>
               </div>
             </article>
@@ -83,7 +103,7 @@ export function HomePageView({
               <div
                 className="route-carousel-dots"
                 role="tablist"
-                aria-label={t('homeDynamic.carousel.pagination')}
+                aria-label={t('homeDynamic.tcg.carousel.pagination')}
               >
                 {carouselSlides.map((slide, index) => (
                   <button
@@ -91,7 +111,7 @@ export function HomePageView({
                     type="button"
                     role="tab"
                     aria-selected={carouselIndex === index}
-                    aria-label={t('homeDynamic.carousel.slide', {
+                    aria-label={t('homeDynamic.tcg.carousel.slide', {
                       current: index + 1,
                       total: carouselSlides.length,
                     })}
@@ -104,13 +124,51 @@ export function HomePageView({
               </div>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <p className="route-home-copy">{t('homeDynamic.tcg.empty')}</p>
+        )}
       </SectionCard>
 
       <SectionCard eyebrow={t('routeHub.spotlight')} title={t('routeHub.quickJump')}>
         <CopyBlock className="route-home-copy">{t('homeDynamic.gallerySubtitle')}</CopyBlock>
+
+        <div className="route-search-row">
+          <label htmlFor="home-gallery-search" className="route-search-label">
+            {t('homeDynamic.search.label')}
+          </label>
+
+          <div className="route-search-control">
+            <input
+              id="home-gallery-search"
+              type="search"
+              className="route-search-input"
+              value={gallerySearchTerm}
+              onChange={(event) => setGallerySearchTerm(event.currentTarget.value)}
+              placeholder={t('homeDynamic.search.placeholder')}
+              aria-label={t('homeDynamic.search.label')}
+            />
+
+            {hasGallerySearch ? (
+              <button
+                type="button"
+                className="route-search-clear"
+                onClick={() => setGallerySearchTerm('')}
+              >
+                {t('homeDynamic.search.clear')}
+              </button>
+            ) : null}
+          </div>
+
+          <p className="route-search-count">
+            {t('homeDynamic.search.results', {
+              count: paginatedGalleryItems.length,
+              total: filteredGalleryItems.length,
+            })}
+          </p>
+        </div>
+
         <div className="route-photo-grid">
-          {galleryItems.map((pokemon) => (
+          {paginatedGalleryItems.map((pokemon) => (
             <PokemonPreviewLink
               key={pokemon.name}
               to="/pokedex/$pokemonName"
@@ -129,6 +187,38 @@ export function HomePageView({
             />
           ))}
         </div>
+
+        {filteredGalleryItems.length > 0 ? (
+          <div className="route-gallery-pager" aria-label={t('homeDynamic.search.paginationLabel')}>
+            <button
+              type="button"
+              className="route-search-clear"
+              onClick={goToPreviousGalleryPage}
+              disabled={galleryPage === 1}
+            >
+              {t('homeDynamic.search.prev')}
+            </button>
+
+            <p className="route-gallery-page-text">
+              {t('homeDynamic.search.page', { current: galleryPage, total: totalGalleryPages })}
+            </p>
+
+            <button
+              type="button"
+              className="route-search-clear"
+              onClick={goToNextGalleryPage}
+              disabled={galleryPage === totalGalleryPages}
+            >
+              {t('homeDynamic.search.next')}
+            </button>
+          </div>
+        ) : null}
+
+        {filteredGalleryItems.length === 0 ? (
+          <p className="route-search-empty">
+            {t('homeDynamic.search.empty', { query: gallerySearchTerm.trim() })}
+          </p>
+        ) : null}
       </SectionCard>
 
       <SectionCard
@@ -359,10 +449,52 @@ export function HomePageView({
             </div>
           )}
 
+          <div className="github-commit-section">
+            <p className="route-mission-label">{t('homeDynamic.github.recentCommits')}</p>
+
+            <div className="github-commit-list">
+              {githubRecentCommits.map((commit) => (
+                <article key={commit.id} className="github-commit-item">
+                  {commit.url ? (
+                    <a
+                      href={commit.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="github-commit-link"
+                    >
+                      {commit.title}
+                    </a>
+                  ) : (
+                    <strong className="github-commit-title">{commit.title}</strong>
+                  )}
+
+                  <span className="github-commit-meta">
+                    {t('homeDynamic.github.commitBy', {
+                      author: commit.author,
+                      date: formatRepoDate(commit.date),
+                    })}
+                  </span>
+                </article>
+              ))}
+
+              {!githubCommitsQuery.isLoading &&
+              !githubCommitsQuery.isError &&
+              githubRecentCommits.length === 0 ? (
+                <p className="route-home-copy">{t('homeDynamic.github.noCommits')}</p>
+              ) : null}
+            </div>
+          </div>
+
           {githubRepoQuery.isLoading ? (
             <p className="route-home-copy">{t('homeDynamic.github.loading')}</p>
           ) : githubRepoQuery.isError ? (
             <p className="route-home-copy">{t('homeDynamic.github.error')}</p>
+          ) : null}
+
+          {githubCommitsQuery.isLoading ? (
+            <p className="route-home-copy">{t('homeDynamic.github.loadingCommits')}</p>
+          ) : githubCommitsQuery.isError ? (
+            <p className="route-home-copy">{t('homeDynamic.github.errorCommits')}</p>
           ) : null}
         </SectionCard>
       </section>
