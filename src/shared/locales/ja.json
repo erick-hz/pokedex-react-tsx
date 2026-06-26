@@ -88,7 +88,33 @@
       "noDescription": "リポジトリ説明はありません。",
       "none": "なし",
       "unknown": "不明",
-      "payload": "APIレスポンス全体"
+      "payload": "APIレスポンス全体",
+      "recentCommits": "最近のコミット",
+      "loadingCommits": "コミット情報を読み込み中...",
+      "errorCommits": "コミットを読み込めませんでした。",
+      "noCommits": "利用可能なコミットはありません。",
+      "commitBy": "{{author}} · {{date}}",
+      "commitUnknown": "タイトルなしコミット"
+    },
+    "tcg": {
+      "eyebrow": "Pokemon TCG API",
+      "title": "{{name}} のトレーディングカード",
+      "subtitle": "2つ目の公開ポケモンAPIからカード情報を取得し、ダッシュボード下部を充実させます。",
+      "carousel": {
+        "region": "TCGカードカルーセル",
+        "open": "ポケモンを開く",
+        "pagination": "TCGカルーセルページ",
+        "slide": "{{total}}件中{{current}}件目",
+        "subtitle": "注目カード",
+        "meta": "セット: {{set}} · レアリティ: {{rarity}} · HP: {{hp}}"
+      },
+      "set": "セット",
+      "rarity": "レアリティ",
+      "hp": "HP",
+      "loading": "カードデータを読み込み中...",
+      "error": "Pokemon TCGデータを読み込めませんでした。",
+      "empty": "このポケモンのカードは見つかりません。",
+      "unknown": "不明"
     },
     "recentTitle": "最近開いたスポットライト",
     "recentEmpty": "最近のスポットライトはまだありません。",
@@ -109,6 +135,18 @@
       "1": "ヒント: バトルラボは異なるタイプ系統の相手でより効果的です。",
       "2": "ヒント: 言語を切り替えてタイプ名を比較すると学習が速くなります。",
       "3": "ヒント: 集中確認はスポットライト、連続操作は図鑑に戻るのが効率的です。"
+    },
+    "search": {
+      "label": "ポケモン検索",
+      "placeholder": "ポケモン名を入力",
+      "clear": "クリア",
+      "results": "{{total}}件中{{count}}件を表示",
+      "empty": "\"{{query}}\" に一致するポケモンは見つかりません。",
+      "prev": "前へ",
+      "next": "次へ",
+      "page": "{{total}}ページ中{{current}}ページ",
+      "gotoPage": "{{page}}ページへ移動",
+      "paginationLabel": "ポケモンギャラリーのページネーション"
     },
     "metrics": {
       "loaded": "読み込み数",

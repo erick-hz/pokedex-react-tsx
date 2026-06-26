@@ -5,6 +5,33 @@ import { useTranslation } from 'react-i18next';
 
 import { usePokemonDetails, usePokemonList } from '@features/pokemon';
 
+type PokemonTcgResponse = {
+  data?: Array<{
+    id?: string;
+    name?: string;
+    rarity?: string;
+    hp?: string;
+    images?: {
+      small?: string;
+    };
+    set?: {
+      name?: string;
+    };
+  }>;
+};
+
+type GithubCommitsResponse = Array<{
+  sha?: string;
+  html_url?: string;
+  commit?: {
+    message?: string;
+    author?: {
+      name?: string;
+      date?: string;
+    };
+  };
+}>;
+
 export type RouteActivity = {
   pokedex: number;
   intel: number;
@@ -14,6 +41,7 @@ export type RouteActivity = {
 
 const ROUTE_ACTIVITY_STORAGE_KEY = 'home-route-activity';
 const RECENT_SPOTLIGHT_STORAGE_KEY = 'home-recent-spotlight';
+const GALLERY_PAGE_SIZE = 8;
 
 const DEFAULT_ROUTE_ACTIVITY: RouteActivity = {
   pokedex: 0,
@@ -107,11 +135,28 @@ export function useHomePageModel() {
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
+  const githubCommitsQuery = useQuery({
+    queryKey: ['github-repo-commits', 'erick-hz/pokedex-react-tsx'],
+    queryFn: async (): Promise<GithubCommitsResponse> => {
+      const response = await fetch(
+        'https://api.github.com/repos/erick-hz/pokedex-react-tsx/commits?per_page=2',
+      );
+
+      if (!response.ok) {
+        throw new Error(`GitHub commits API request failed: ${response.status}`);
+      }
+
+      return response.json() as Promise<GithubCommitsResponse>;
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
   const [featuredPokemon, setFeaturedPokemon] = useState('pikachu');
   const [now, setNow] = useState(() => new Date());
   const [tipIndex, setTipIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [carouselPhotoOffset, setCarouselPhotoOffset] = useState(0);
+  const [gallerySearchTerm, setRawGallerySearchTerm] = useState('');
+  const [galleryPage, setGalleryPage] = useState(1);
   const [routeActivity, setRouteActivity] = useState<RouteActivity>(() => loadRouteActivity());
   const [recentSpotlight, setRecentSpotlight] = useState<string[]>(() => loadRecentSpotlight());
 
@@ -126,7 +171,7 @@ export function useHomePageModel() {
   );
 
   const quickJumpCandidates = useMemo(
-    () => pokemonListQuery.data?.results.slice(0, 8) ?? [],
+    () => pokemonListQuery.data?.results ?? [],
     [pokemonListQuery.data],
   );
 
@@ -139,11 +184,86 @@ export function useHomePageModel() {
     [quickJumpCandidates],
   );
 
+  const normalizedGallerySearch = gallerySearchTerm.trim().toLowerCase();
+
+  const filteredGalleryItems = useMemo(() => {
+    if (!normalizedGallerySearch) {
+      return galleryItems;
+    }
+
+    return galleryItems.filter((pokemon) => {
+      const localizedName = pokemon.displayName ?? '';
+
+      return [pokemon.name, localizedName].some((name) =>
+        name.toLowerCase().includes(normalizedGallerySearch),
+      );
+    });
+  }, [galleryItems, normalizedGallerySearch]);
+
+  const totalGalleryPages = Math.max(1, Math.ceil(filteredGalleryItems.length / GALLERY_PAGE_SIZE));
+
+  const effectiveGalleryPage = Math.min(galleryPage, totalGalleryPages);
+
+  const paginatedGalleryItems = useMemo(() => {
+    const startIndex = (effectiveGalleryPage - 1) * GALLERY_PAGE_SIZE;
+
+    return filteredGalleryItems.slice(startIndex, startIndex + GALLERY_PAGE_SIZE);
+  }, [effectiveGalleryPage, filteredGalleryItems]);
+
+  const goToPreviousGalleryPage = useCallback(() => {
+    setGalleryPage((current) => Math.max(1, Math.min(current, totalGalleryPages) - 1));
+  }, [totalGalleryPages]);
+
+  const goToNextGalleryPage = useCallback(() => {
+    setGalleryPage((current) =>
+      Math.min(totalGalleryPages, Math.min(current, totalGalleryPages) + 1),
+    );
+  }, [totalGalleryPages]);
+
+  const setGallerySearchTerm = useCallback((value: string) => {
+    setRawGallerySearchTerm(value);
+    setGalleryPage(1);
+  }, []);
+
   const effectiveFeaturedPokemon = spotlightCandidates.some(
     (entry) => entry.name === featuredPokemon,
   )
     ? featuredPokemon
     : (spotlightCandidates[0]?.name ?? featuredPokemon);
+
+  const pokemonTcgQuery = useQuery({
+    queryKey: ['pokemon-tcg-cards', effectiveFeaturedPokemon],
+    queryFn: async (): Promise<PokemonTcgResponse> => {
+      const query = new URLSearchParams({
+        q: `name:${effectiveFeaturedPokemon}`,
+        pageSize: '6',
+      });
+
+      const response = await fetch(`https://api.pokemontcg.io/v2/cards?${query.toString()}`);
+
+      if (!response.ok) {
+        throw new Error(`Pokemon TCG API request failed: ${response.status}`);
+      }
+
+      return response.json() as Promise<PokemonTcgResponse>;
+    },
+    enabled: Boolean(effectiveFeaturedPokemon),
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+  });
+
+  const pokemonTcgCards = useMemo(
+    () =>
+      (pokemonTcgQuery.data?.data ?? []).map((card, index) => ({
+        id: card.id ?? `${effectiveFeaturedPokemon}-${index}`,
+        name: card.name ?? effectiveFeaturedPokemon,
+        image: card.images?.small ?? '',
+        setName: card.set?.name ?? t('homeDynamic.tcg.unknown'),
+        rarity: card.rarity ?? t('homeDynamic.tcg.unknown'),
+        hp: card.hp ?? t('homeDynamic.tcg.unknown'),
+      })),
+    [effectiveFeaturedPokemon, pokemonTcgQuery.data?.data, t],
+  );
 
   const spotlightDetailsQuery = usePokemonDetails(effectiveFeaturedPokemon);
 
@@ -275,43 +395,21 @@ export function useHomePageModel() {
     setFeaturedPokemon(randomPick.name);
   };
 
-  const routeConfig = useMemo(
-    () => [
-      {
-        key: 'pokedex' as const,
-        title: t('routeHub.openPokedex'),
-        subtitle: t('homeDynamic.routeCards.pokedex'),
-        action: () => goToRoute('/pokedex', 'pokedex'),
-      },
-      {
-        key: 'intel' as const,
-        title: t('routeHub.openIntel'),
-        subtitle: t('homeDynamic.routeCards.intel'),
-        action: () => goToRoute('/intel', 'intel'),
-      },
-      {
-        key: 'battleLab' as const,
-        title: t('routeHub.openLab'),
-        subtitle: t('homeDynamic.routeCards.battleLab'),
-        action: () => goToRoute('/battle-lab', 'battleLab'),
-      },
-    ],
-    [goToRoute, t],
-  );
-
   const carouselSlides = useMemo(
     () =>
-      routeConfig.map((route, index) => ({
-        ...route,
-        pokemon:
-          galleryItems.length > 0
-            ? galleryItems[(index + carouselPhotoOffset) % galleryItems.length]
-            : null,
+      pokemonTcgCards.map((card) => ({
+        key: card.id,
+        title: card.name,
+        subtitle: t('homeDynamic.tcg.carousel.subtitle'),
+        card,
       })),
-    [carouselPhotoOffset, galleryItems, routeConfig],
+    [pokemonTcgCards, t],
   );
 
-  const activeSlide = carouselSlides[carouselIndex % Math.max(carouselSlides.length, 1)];
+  const effectiveCarouselIndex =
+    carouselSlides.length > 0 ? carouselIndex % carouselSlides.length : 0;
+
+  const activeSlide = carouselSlides.length > 0 ? carouselSlides[effectiveCarouselIndex] : null;
 
   useEffect(() => {
     if (carouselSlides.length <= 1) {
@@ -320,19 +418,12 @@ export function useHomePageModel() {
 
     const timer = window.setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % carouselSlides.length);
-      setCarouselPhotoOffset((prev) => {
-        if (galleryItems.length <= 1) {
-          return prev;
-        }
-
-        return (prev + 1) % galleryItems.length;
-      });
     }, 3600);
 
     return () => {
       window.clearInterval(timer);
     };
-  }, [carouselSlides.length, galleryItems.length]);
+  }, [carouselSlides.length]);
 
   const recommendedRouteKey = useMemo(() => {
     const totalUsage = Object.values(routeActivity).reduce((acc, value) => acc + value, 0);
@@ -396,6 +487,22 @@ export function useHomePageModel() {
     [githubRepoQuery.data, t],
   );
 
+  const githubRecentCommits = useMemo(
+    () =>
+      (githubCommitsQuery.data ?? []).slice(0, 2).map((commit, index) => {
+        const rawMessage = String(commit.commit?.message ?? '').trim();
+
+        return {
+          id: String(commit.sha ?? index),
+          title: rawMessage.split('\n')[0] || t('homeDynamic.github.commitUnknown'),
+          author: String(commit.commit?.author?.name ?? t('homeDynamic.github.unknown')),
+          date: String(commit.commit?.author?.date ?? ''),
+          url: String(commit.html_url ?? ''),
+        };
+      }),
+    [githubCommitsQuery.data, t],
+  );
+
   const formatRepoDate = useCallback(
     (isoDate: string) => {
       if (!isoDate) {
@@ -418,24 +525,24 @@ export function useHomePageModel() {
   );
 
   const openCarouselPokemonInfo = useCallback(() => {
-    const pokemonName = activeSlide?.pokemon?.name ?? effectiveFeaturedPokemon;
+    const pokemonName = effectiveFeaturedPokemon;
 
     updateRouteActivity('spotlight');
     pushRecentSpotlight(pokemonName);
     void navigate({ to: '/pokedex/$pokemonName', params: { pokemonName } });
-  }, [
-    activeSlide?.pokemon?.name,
-    effectiveFeaturedPokemon,
-    navigate,
-    pushRecentSpotlight,
-    updateRouteActivity,
-  ]);
+  }, [effectiveFeaturedPokemon, navigate, pushRecentSpotlight, updateRouteActivity]);
 
   return {
     t,
     i18n,
     spotlightCandidates,
     galleryItems,
+    filteredGalleryItems,
+    paginatedGalleryItems,
+    gallerySearchTerm,
+    galleryPage: effectiveGalleryPage,
+    totalGalleryPages,
+    hasGallerySearch: Boolean(normalizedGallerySearch),
     selectedSpotlight,
     recentSpotlightItems,
     tipKeys,
@@ -445,20 +552,27 @@ export function useHomePageModel() {
     recommendedRouteKey,
     activeSlide,
     carouselSlides,
-    carouselIndex,
+    carouselIndex: effectiveCarouselIndex,
     localizedClock,
     greetingKey,
     spotlightImage,
     effectiveFeaturedPokemon,
     githubRepoQuery,
+    githubCommitsQuery,
     githubStats,
     githubMetadata,
+    githubRecentCommits,
+    pokemonTcgQuery,
+    pokemonTcgCards,
     formatRepoDate,
     updateRouteActivity,
     pushRecentSpotlight,
     goToRoute,
     randomizeSpotlight,
     openCarouselPokemonInfo,
+    goToPreviousGalleryPage,
+    goToNextGalleryPage,
+    setGallerySearchTerm,
     setCarouselIndex,
   };
 }

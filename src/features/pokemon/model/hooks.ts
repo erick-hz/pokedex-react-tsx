@@ -5,7 +5,7 @@ import { fetchPokemonDetails, fetchPokemonList } from '../api/pokemonApi';
 
 import { pokemonKeys } from './queryKeys';
 
-const POKEMON_LIMIT = 20;
+const POKEMON_LIMIT = 1000;
 
 export function usePokemonList() {
   const { i18n } = useTranslation();
