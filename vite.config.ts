@@ -13,4 +13,13 @@ export default defineConfig({
       '@features': fileURLToPath(new URL('./src/features', import.meta.url)),
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+    },
+  },
 });
