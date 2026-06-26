@@ -31,6 +31,9 @@ App URL: http://localhost:5173
 - npm run dev: start development server
 - npm run build: production build
 - npm run preview: preview build
+- npm run test: run test suite once
+- npm run test:watch: run tests in watch mode
+- npm run test:coverage: run tests with coverage report
 - npm run lint: run ESLint
 - npm run lint:fix: run ESLint with auto-fixes
 - npm run format: format files with Prettier
@@ -51,7 +54,7 @@ If you want to contribute, open your PR using this template:
 
 docs/PULL_REQUEST_TEMPLATE.md
 
-Please complete the checklist and run `npm run lint` and `npm run build` before submitting.
+Please complete the checklist and run `npm run lint`, `npm run test`, and `npm run build` before submitting.
 
 For style consistency across the team:
 
