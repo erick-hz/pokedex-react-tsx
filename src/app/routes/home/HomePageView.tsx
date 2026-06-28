@@ -58,9 +58,9 @@ export function HomePageView({
 
         <p className="route-recommend-chip">{recommendationText}</p>
 
-        {pokemonTcgQuery.isLoading ? (
+        {pokemonTcgQuery.isLoading && !activeSlide ? (
           <p className="route-home-copy">{t('homeDynamic.tcg.loading')}</p>
-        ) : pokemonTcgQuery.isError ? (
+        ) : pokemonTcgQuery.isError && !activeSlide ? (
           <p className="route-home-copy">{t('homeDynamic.tcg.error')}</p>
         ) : activeSlide ? (
           <div
