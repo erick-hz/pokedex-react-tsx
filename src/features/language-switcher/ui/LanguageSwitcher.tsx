@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { FallbackImage } from '@shared/ui';
+
 type LanguageCode = 'en' | 'es' | 'ja';
 
 type LanguageOption = {
@@ -91,7 +93,7 @@ export default function LanguageSwitcher() {
         aria-controls={menuId}
         aria-label={t('language.select', 'Select language')}
       >
-        <img
+        <FallbackImage
           src={currentLanguage.flag}
           alt=""
           aria-hidden="true"
@@ -123,7 +125,7 @@ export default function LanguageSwitcher() {
                 className={`language-dropdown-option ${isSelected ? 'active' : ''}`}
                 onClick={() => void changeLanguage(language.code)}
               >
-                <img
+                <FallbackImage
                   src={language.flag}
                   alt=""
                   aria-hidden="true"
