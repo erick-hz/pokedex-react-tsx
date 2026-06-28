@@ -45,6 +45,10 @@ export interface PokemonDetails {
   id: number;
   name: string;
   displayName?: string;
+  species?: {
+    name: string;
+    url: string;
+  };
   base_experience?: number;
   sprites: PokemonSprites;
   types: PokemonTypeEntry[];

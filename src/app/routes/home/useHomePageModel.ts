@@ -4,8 +4,15 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
 import { fetchPokemonDetails } from '@features/pokemon/api/pokemonApi';
+import {
+  fetchPokemonBattleIntel,
+  fetchPokemonCompanionData,
+} from '@features/public-apis/api/publicApisApi';
+import { publicApisKeys } from '@features/public-apis/model/queryKeys';
 import { pokemonKeys } from '@features/pokemon/model/queryKeys';
 import { usePokemonDetails, usePokemonList } from '@features/pokemon';
+import { requestJson } from '@shared/logging/httpClient';
+import { logger } from '@shared/logging/logger';
 
 type PokemonTcgResponse = {
   data?: Array<{
@@ -145,13 +152,11 @@ export function useHomePageModel() {
   const githubRepoQuery = useQuery({
     queryKey: ['github-repo', 'erick-hz/pokedex-react-tsx'],
     queryFn: async (): Promise<Record<string, unknown>> => {
-      const response = await fetch('https://api.github.com/repos/erick-hz/pokedex-react-tsx');
-
-      if (!response.ok) {
-        throw new Error(`GitHub API request failed: ${response.status}`);
-      }
-
-      return response.json() as Promise<Record<string, unknown>>;
+      return requestJson<Record<string, unknown>>(
+        'https://api.github.com/repos/erick-hz/pokedex-react-tsx',
+        undefined,
+        'homeGitHubApi',
+      );
     },
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
@@ -159,15 +164,11 @@ export function useHomePageModel() {
   const githubCommitsQuery = useQuery({
     queryKey: ['github-repo-commits', 'erick-hz/pokedex-react-tsx'],
     queryFn: async (): Promise<GithubCommitsResponse> => {
-      const response = await fetch(
+      return requestJson<GithubCommitsResponse>(
         'https://api.github.com/repos/erick-hz/pokedex-react-tsx/commits?per_page=2',
+        undefined,
+        'homeGitHubCommitsApi',
       );
-
-      if (!response.ok) {
-        throw new Error(`GitHub commits API request failed: ${response.status}`);
-      }
-
-      return response.json() as Promise<GithubCommitsResponse>;
     },
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
@@ -283,13 +284,11 @@ export function useHomePageModel() {
         pageSize: '6',
       });
 
-      const response = await fetch(`https://api.pokemontcg.io/v2/cards?${query.toString()}`);
-
-      if (!response.ok) {
-        throw new Error(`Pokemon TCG API request failed: ${response.status}`);
-      }
-
-      return response.json() as Promise<PokemonTcgResponse>;
+      return requestJson<PokemonTcgResponse>(
+        `https://api.pokemontcg.io/v2/cards?${query.toString()}`,
+        undefined,
+        'homePokemonTcgApi',
+      );
     },
     [],
   );
@@ -333,6 +332,31 @@ export function useHomePageModel() {
     [language, queryClient],
   );
 
+  const prefetchPokemonRouteData = useCallback(
+    async (pokemonName: string) => {
+      if (!pokemonName) {
+        return;
+      }
+
+      await Promise.allSettled([
+        prefetchPokemonDetailsWithImage(pokemonName),
+        queryClient.prefetchQuery({
+          queryKey: publicApisKeys.companion(pokemonName, language),
+          queryFn: () => fetchPokemonCompanionData(pokemonName, language),
+          staleTime: 1000 * 60 * 30,
+          gcTime: 1000 * 60 * 60,
+        }),
+        queryClient.prefetchQuery({
+          queryKey: publicApisKeys.battle(pokemonName, language),
+          queryFn: () => fetchPokemonBattleIntel(pokemonName, language),
+          staleTime: 1000 * 60 * 30,
+          gcTime: 1000 * 60 * 60,
+        }),
+      ]);
+    },
+    [language, prefetchPokemonDetailsWithImage, queryClient],
+  );
+
   const pickPokemonWithCards = useCallback(
     async (excludeNames: string[] = []) => {
       if (quickJumpCandidates.length === 0) {
@@ -356,7 +380,10 @@ export function useHomePageModel() {
             return candidateName;
           }
         } catch {
-          // Ignore failed candidates and keep scanning the next option.
+          logger.warn('Failed to fetch cards for candidate during spotlight scan', {
+            scope: 'homePokemonTcgApi',
+            candidateName,
+          });
         }
       }
 
@@ -778,26 +805,41 @@ export function useHomePageModel() {
     [localeCode, t],
   );
 
+  const resolveCarouselPokemonName = useCallback(
+    (cardName?: string) => {
+      const normalizedCardName = ` ${(cardName ?? effectiveHomeFeaturedPokemon)
+        .toLowerCase()
+        .replaceAll('-', ' ')} `;
+
+      const matchedPokemon = quickJumpCandidates
+        .map((entry) => entry.name)
+        .filter((entryName) => normalizedCardName.includes(` ${entryName.replaceAll('-', ' ')} `))
+        .sort((left, right) => right.length - left.length)[0];
+
+      return matchedPokemon ?? effectiveHomeFeaturedPokemon;
+    },
+    [effectiveHomeFeaturedPokemon, quickJumpCandidates],
+  );
+
+  useEffect(() => {
+    const pokemonName = resolveCarouselPokemonName(activeSlide?.card.name);
+
+    void prefetchPokemonRouteData(pokemonName);
+  }, [activeSlide?.card.name, prefetchPokemonRouteData, resolveCarouselPokemonName]);
+
   const openCarouselPokemonInfo = useCallback(() => {
-    const cardName = activeSlide?.card.name ?? effectiveHomeFeaturedPokemon;
-    const normalizedCardName = ` ${cardName.toLowerCase().replaceAll('-', ' ')} `;
-
-    const matchedPokemon = quickJumpCandidates
-      .map((entry) => entry.name)
-      .filter((entryName) => normalizedCardName.includes(` ${entryName.replaceAll('-', ' ')} `))
-      .sort((left, right) => right.length - left.length)[0];
-
-    const pokemonName = matchedPokemon ?? effectiveHomeFeaturedPokemon;
+    const pokemonName = resolveCarouselPokemonName(activeSlide?.card.name);
 
     updateRouteActivity('spotlight');
     pushRecentSpotlight(pokemonName);
+    void prefetchPokemonRouteData(pokemonName);
     void navigate({ to: '/pokedex/$pokemonName', params: { pokemonName } });
   }, [
     activeSlide?.card.name,
-    effectiveHomeFeaturedPokemon,
     navigate,
+    prefetchPokemonRouteData,
     pushRecentSpotlight,
-    quickJumpCandidates,
+    resolveCarouselPokemonName,
     updateRouteActivity,
   ]);
 

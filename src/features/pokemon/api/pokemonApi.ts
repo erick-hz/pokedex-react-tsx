@@ -3,6 +3,7 @@ import type {
   PokemonListResponse,
   PokemonSpeciesData,
 } from '@features/pokemon/model/types';
+import { requestJson } from '@shared/logging/httpClient';
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
@@ -13,22 +14,20 @@ function getLanguageCode(language: string): string {
   return 'en';
 }
 
-async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
-
 export async function fetchPokemonList(limit = 100): Promise<PokemonListResponse> {
-  return fetchJson<PokemonListResponse>(`${BASE_URL}/pokemon?limit=${limit}`);
+  return requestJson<PokemonListResponse>(
+    `${BASE_URL}/pokemon?limit=${limit}`,
+    undefined,
+    'pokemonApi',
+  );
 }
 
 export async function fetchPokemonSpecies(name: string): Promise<PokemonSpeciesData> {
-  return fetchJson<PokemonSpeciesData>(`${BASE_URL}/pokemon-species/${name}`);
+  return requestJson<PokemonSpeciesData>(
+    `${BASE_URL}/pokemon-species/${name}`,
+    undefined,
+    'pokemonApi',
+  );
 }
 
 export async function fetchPokemonListWithNames(
@@ -61,10 +60,13 @@ export async function fetchPokemonListWithNames(
 }
 
 export async function fetchPokemonDetails(name: string, language = 'en'): Promise<PokemonDetails> {
-  const [pokemon, species] = await Promise.all([
-    fetchJson<PokemonDetails>(`${BASE_URL}/pokemon/${name}`),
-    fetchJson<PokemonSpeciesData>(`${BASE_URL}/pokemon-species/${name}`),
-  ]);
+  const pokemon = await requestJson<PokemonDetails>(
+    `${BASE_URL}/pokemon/${name}`,
+    undefined,
+    'pokemonApi',
+  );
+  const speciesUrl = pokemon.species?.url ?? `${BASE_URL}/pokemon-species/${name}`;
+  const species = await requestJson<PokemonSpeciesData>(speciesUrl, undefined, 'pokemonApi');
 
   const lang = getLanguageCode(language);
 
