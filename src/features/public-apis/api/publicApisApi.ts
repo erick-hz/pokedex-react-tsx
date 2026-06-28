@@ -1,4 +1,5 @@
 import { fetchPokemonDetails } from '@features/pokemon/api/pokemonApi';
+import { requestJson } from '@shared/logging/httpClient';
 
 import type {
   PokemonBattleIntelResponse,
@@ -29,16 +30,6 @@ type TypeDetailResponse = {
     no_damage_from: Array<{ name: string }>;
   };
 };
-
-async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
 
 function getLanguageCode(language: string) {
   if (language.startsWith('es')) return 'es';
@@ -82,7 +73,7 @@ async function fetchLocalizedResourceName(
     return fallback;
   }
 
-  const resource = await fetchJson<LocalizedNameResponse>(url);
+  const resource = await requestJson<LocalizedNameResponse>(url, undefined, 'publicApisApi');
 
   return getLocalizedName(resource.names, language, fallback);
 }
@@ -94,8 +85,10 @@ async function localizeTypeNames(names: string[], language: string) {
 
   const localizedEntries = await Promise.all(
     names.map(async (typeName) => {
-      const detail = await fetchJson<TypeDetailResponse>(
+      const detail = await requestJson<TypeDetailResponse>(
         `https://pokeapi.co/api/v2/type/${typeName}`,
+        undefined,
+        'publicApisApi',
       );
 
       return getLocalizedName(detail.names, language, titleCasePokemonName(typeName));
@@ -106,7 +99,11 @@ async function localizeTypeNames(names: string[], language: string) {
 }
 
 export async function fetchPokemonSpeciesData(name: string): Promise<PokemonSpeciesResponse> {
-  return fetchJson<PokemonSpeciesResponse>(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
+  return requestJson<PokemonSpeciesResponse>(
+    `https://pokeapi.co/api/v2/pokemon-species/${name}`,
+    undefined,
+    'publicApisApi',
+  );
 }
 
 async function collectLocalizedEvolutionNames(
@@ -136,9 +133,13 @@ export async function fetchPokemonCompanionData(
   name: string,
   language = 'en',
 ): Promise<PokemonCompanionDataResponse> {
-  const species = await fetchPokemonSpeciesData(name);
-  const evolutionChain = await fetchJson<PokemonEvolutionChainResponse>(
+  const pokemon = await fetchPokemonDetails(name, language);
+  const speciesUrl = pokemon.species?.url ?? `https://pokeapi.co/api/v2/pokemon-species/${name}`;
+  const species = await requestJson<PokemonSpeciesResponse>(speciesUrl, undefined, 'publicApisApi');
+  const evolutionChain = await requestJson<PokemonEvolutionChainResponse>(
     species.evolution_chain.url,
+    undefined,
+    'publicApisApi',
   );
   const lang = getLanguageCode(language);
 
@@ -174,8 +175,10 @@ export async function fetchPokemonBattleIntel(
 
   const damageRelationsList = await Promise.all(
     pokemon.types.map(async (typeEntry) => {
-      const response = await fetchJson<TypeDetailResponse>(
+      const response = await requestJson<TypeDetailResponse>(
         `https://pokeapi.co/api/v2/type/${typeEntry.type.name}`,
+        undefined,
+        'publicApisApi',
       );
 
       return {
