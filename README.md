@@ -48,6 +48,32 @@ src/
   shared/     # Shared UI components, config, and locales
 ```
 
+## TanStack Router Conventions
+
+- Route registration is centralized in src/app/router.tsx.
+- Search params are validated through dedicated validators in src/app/routes/searchValidators.ts.
+- Route pages should consume validated search state and avoid reading raw URL params directly.
+- New routes that depend on search params should include validator tests.
+
+## TanStack Query Conventions
+
+- Query keys are defined by feature modules and must include all cache dimensions (for example language and pokemon name).
+- Global query defaults are configured in src/app/main.tsx.
+- Query cache is persisted in localStorage through PersistQueryClientProvider.
+- Current defaults:
+  - staleTime: 5 minutes for core pokemon queries
+  - gcTime: 30 minutes for core pokemon queries
+  - retry: 1
+  - refetchOnWindowFocus: false
+- Feature-level prefetching runs in src/app/providers/AppPrefetch.tsx.
+- UI components should always account for loading, empty, success, and error states when consuming queries.
+
+## Quality Gates
+
+- Required before opening a PR: npm run lint, npm run test, npm run build.
+- Pre-commit currently formats staged files through lint-staged.
+- Review standards are defined in .github/REVIEW_BEST_PRACTICES.md and loaded by .github/copilot-instructions.md.
+
 ## Contributing
 
 If you want to contribute, open your PR using this template:

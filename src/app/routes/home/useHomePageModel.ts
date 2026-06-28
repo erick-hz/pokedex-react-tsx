@@ -459,20 +459,6 @@ export function useHomePageModel() {
   }, [tipKeys]);
 
   useEffect(() => {
-    if (quickJumpCandidates.length === 0) {
-      return;
-    }
-
-    setHomeFeaturedPokemon((current) => {
-      if (quickJumpCandidates.some((entry) => entry.name === current)) {
-        return current;
-      }
-
-      return pickRandomPokemonName() ?? current;
-    });
-  }, [pickRandomPokemonName, quickJumpCandidates]);
-
-  useEffect(() => {
     if (quickJumpCandidates.length <= 1) {
       return;
     }
@@ -505,23 +491,6 @@ export function useHomePageModel() {
     pokemonTcgQuery.isFetching,
     quickJumpCandidates.length,
   ]);
-
-  useEffect(() => {
-    if (quickJumpCandidates.length === 0) {
-      return;
-    }
-
-    setLivePulsePokemon((current) => {
-      if (
-        quickJumpCandidates.some((entry) => entry.name === current) &&
-        current !== effectiveHomeFeaturedPokemon
-      ) {
-        return current;
-      }
-
-      return pickRandomPokemonName([effectiveHomeFeaturedPokemon]) ?? current;
-    });
-  }, [effectiveHomeFeaturedPokemon, pickRandomPokemonName, quickJumpCandidates]);
 
   useEffect(() => {
     if (quickJumpCandidates.length <= 1) {

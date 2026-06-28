@@ -15,7 +15,7 @@ export function PokemonList({ selectedPokemon, onSelectPokemon }: PokemonListPro
   const { data, isLoading } = usePokemonList();
   const [page, setPage] = useState(1);
 
-  const items = data?.results ?? [];
+  const items = useMemo(() => data?.results ?? [], [data?.results]);
   const totalPages = Math.max(1, Math.ceil(items.length / POKEMON_PAGE_SIZE));
   const effectivePage = Math.min(page, totalPages);
 
