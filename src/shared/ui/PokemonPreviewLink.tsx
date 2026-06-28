@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 
+import FallbackImage from './FallbackImage';
+
 type PokemonPreviewLinkProps = {
   to: string;
   params?: Record<string, string>;
@@ -29,7 +31,7 @@ export default function PokemonPreviewLink({
   return (
     <Link to={to} params={params} className={className} onClick={onClick}>
       {image ? (
-        <img
+        <FallbackImage
           src={image}
           alt={name}
           className={imageClassName ?? 'route-photo-card__image'}

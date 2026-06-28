@@ -1,5 +1,6 @@
 import {
   CopyBlock,
+  FallbackImage,
   PokemonPreviewLink,
   RouteActionButton,
   RouteActionLink,
@@ -71,7 +72,7 @@ export function HomePageView({
             <article className="route-carousel-card">
               <div className="route-carousel-media">
                 {activeSlide.card.image ? (
-                  <img
+                  <FallbackImage
                     src={activeSlide.card.image}
                     alt={activeSlide.title}
                     className="route-carousel-image"
@@ -236,7 +237,7 @@ export function HomePageView({
         <div className="route-live-grid">
           <article className="route-live-media">
             {spotlightImage ? (
-              <img
+              <FallbackImage
                 src={spotlightImage}
                 alt={selectedSpotlight?.displayName ?? effectiveFeaturedPokemon}
                 className="route-live-image"
@@ -361,7 +362,7 @@ export function HomePageView({
           className="github-panel-card"
         >
           <div className="github-panel-head">
-            <img
+            <FallbackImage
               src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
               alt="GitHub"
               className="github-logo"
