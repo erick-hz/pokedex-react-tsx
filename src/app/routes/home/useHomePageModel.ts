@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
+import { fetchPokemonDetails } from '@features/pokemon/api/pokemonApi';
+import { pokemonKeys } from '@features/pokemon/model/queryKeys';
 import { usePokemonDetails, usePokemonList } from '@features/pokemon';
 
 type PokemonTcgResponse = {
@@ -42,6 +44,10 @@ export type RouteActivity = {
 const ROUTE_ACTIVITY_STORAGE_KEY = 'home-route-activity';
 const RECENT_SPOTLIGHT_STORAGE_KEY = 'home-recent-spotlight';
 const GALLERY_PAGE_SIZE = 8;
+const HOME_ROTATION_MS = 9000;
+const LIVE_PULSE_ROTATION_MS = 9000;
+const CARD_ROTATION_MS = 9000;
+const MAX_TCG_CANDIDATE_CHECKS = 30;
 
 const DEFAULT_ROUTE_ACTIVITY: RouteActivity = {
   pokedex: 0,
@@ -117,9 +123,24 @@ const getPokemonArtworkFromUrl = (url: string) => {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
 };
 
+const preloadImage = (imageUrl: string) =>
+  new Promise<void>((resolve) => {
+    if (!imageUrl) {
+      resolve();
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = imageUrl;
+  });
+
 export function useHomePageModel() {
   const { t, i18n } = useTranslation();
+  const language = i18n.resolvedLanguage ?? i18n.language;
   const navigate = useNavigate({ from: '/' });
+  const queryClient = useQueryClient();
   const pokemonListQuery = usePokemonList();
   const githubRepoQuery = useQuery({
     queryKey: ['github-repo', 'erick-hz/pokedex-react-tsx'],
@@ -151,7 +172,8 @@ export function useHomePageModel() {
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
-  const [featuredPokemon, setFeaturedPokemon] = useState('pikachu');
+  const [homeFeaturedPokemon, setHomeFeaturedPokemon] = useState('');
+  const [livePulsePokemon, setLivePulsePokemon] = useState('');
   const [now, setNow] = useState(() => new Date());
   const [tipIndex, setTipIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -165,14 +187,27 @@ export function useHomePageModel() {
     [],
   );
 
-  const spotlightCandidates = useMemo(
-    () => pokemonListQuery.data?.results.slice(0, 20) ?? [],
-    [pokemonListQuery.data],
-  );
-
   const quickJumpCandidates = useMemo(
     () => pokemonListQuery.data?.results ?? [],
     [pokemonListQuery.data],
+  );
+
+  const spotlightCandidates = useMemo(() => quickJumpCandidates, [quickJumpCandidates]);
+
+  const pickRandomPokemonName = useCallback(
+    (excludeNames: string[] = []) => {
+      if (quickJumpCandidates.length === 0) {
+        return null;
+      }
+
+      const excludeNameSet = new Set(excludeNames);
+      const candidates = quickJumpCandidates.filter((entry) => !excludeNameSet.has(entry.name));
+      const source = candidates.length > 0 ? candidates : quickJumpCandidates;
+      const randomPick = source[Math.floor(Math.random() * source.length)];
+
+      return randomPick.name;
+    },
+    [quickJumpCandidates],
   );
 
   const galleryItems = useMemo(
@@ -225,17 +260,26 @@ export function useHomePageModel() {
     setGalleryPage(1);
   }, []);
 
-  const effectiveFeaturedPokemon = spotlightCandidates.some(
-    (entry) => entry.name === featuredPokemon,
+  const effectiveHomeFeaturedPokemon = quickJumpCandidates.some(
+    (entry) => entry.name === homeFeaturedPokemon,
   )
-    ? featuredPokemon
-    : (spotlightCandidates[0]?.name ?? featuredPokemon);
+    ? homeFeaturedPokemon
+    : (quickJumpCandidates[0]?.name ?? 'pikachu');
 
-  const pokemonTcgQuery = useQuery({
-    queryKey: ['pokemon-tcg-cards', effectiveFeaturedPokemon],
-    queryFn: async (): Promise<PokemonTcgResponse> => {
+  const fallbackLivePulsePokemon =
+    quickJumpCandidates.find((entry) => entry.name !== effectiveHomeFeaturedPokemon)?.name ??
+    effectiveHomeFeaturedPokemon;
+
+  const effectiveFeaturedPokemon =
+    quickJumpCandidates.some((entry) => entry.name === livePulsePokemon) &&
+    livePulsePokemon !== effectiveHomeFeaturedPokemon
+      ? livePulsePokemon
+      : fallbackLivePulsePokemon;
+
+  const fetchPokemonTcgCards = useCallback(
+    async (pokemonName: string): Promise<PokemonTcgResponse> => {
       const query = new URLSearchParams({
-        q: `name:${effectiveFeaturedPokemon}`,
+        q: `name:${pokemonName}`,
         pageSize: '6',
       });
 
@@ -247,7 +291,85 @@ export function useHomePageModel() {
 
       return response.json() as Promise<PokemonTcgResponse>;
     },
-    enabled: Boolean(effectiveFeaturedPokemon),
+    [],
+  );
+
+  const prefetchPokemonTcgCards = useCallback(
+    async (pokemonName: string) => {
+      if (!pokemonName) {
+        return null;
+      }
+
+      return queryClient.fetchQuery({
+        queryKey: ['pokemon-tcg-cards', pokemonName],
+        queryFn: () => fetchPokemonTcgCards(pokemonName),
+        staleTime: 1000 * 60 * 10,
+        gcTime: 1000 * 60 * 30,
+      });
+    },
+    [fetchPokemonTcgCards, queryClient],
+  );
+
+  const prefetchPokemonDetailsWithImage = useCallback(
+    async (pokemonName: string) => {
+      if (!pokemonName) {
+        return;
+      }
+
+      const details = await queryClient.fetchQuery({
+        queryKey: pokemonKeys.detail(pokemonName, language),
+        queryFn: () => fetchPokemonDetails(pokemonName, language),
+        staleTime: 1000 * 60 * 5,
+        gcTime: 1000 * 60 * 30,
+      });
+
+      const imageUrl =
+        details.sprites.other?.['official-artwork']?.front_default ??
+        details.sprites.front_default ??
+        '';
+
+      await preloadImage(imageUrl);
+    },
+    [language, queryClient],
+  );
+
+  const pickPokemonWithCards = useCallback(
+    async (excludeNames: string[] = []) => {
+      if (quickJumpCandidates.length === 0) {
+        return null;
+      }
+
+      const excludedNamesSet = new Set(excludeNames);
+      const source = quickJumpCandidates.filter((entry) => !excludedNamesSet.has(entry.name));
+      const candidateNames = (source.length > 0 ? source : quickJumpCandidates)
+        .map((entry) => entry.name)
+        .sort(() => Math.random() - 0.5);
+      const maxChecks = Math.min(candidateNames.length, MAX_TCG_CANDIDATE_CHECKS);
+
+      for (let index = 0; index < maxChecks; index += 1) {
+        const candidateName = candidateNames[index];
+
+        try {
+          const cardsData = await prefetchPokemonTcgCards(candidateName);
+
+          if ((cardsData?.data?.length ?? 0) > 0) {
+            return candidateName;
+          }
+        } catch {
+          // Ignore failed candidates and keep scanning the next option.
+        }
+      }
+
+      return null;
+    },
+    [prefetchPokemonTcgCards, quickJumpCandidates],
+  );
+
+  const pokemonTcgQuery = useQuery({
+    queryKey: ['pokemon-tcg-cards', effectiveHomeFeaturedPokemon],
+    queryFn: () => fetchPokemonTcgCards(effectiveHomeFeaturedPokemon),
+    placeholderData: keepPreviousData,
+    enabled: Boolean(effectiveHomeFeaturedPokemon),
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 30,
   });
@@ -255,14 +377,14 @@ export function useHomePageModel() {
   const pokemonTcgCards = useMemo(
     () =>
       (pokemonTcgQuery.data?.data ?? []).map((card, index) => ({
-        id: card.id ?? `${effectiveFeaturedPokemon}-${index}`,
-        name: card.name ?? effectiveFeaturedPokemon,
+        id: card.id ?? `${effectiveHomeFeaturedPokemon}-${index}`,
+        name: card.name ?? effectiveHomeFeaturedPokemon,
         image: card.images?.small ?? '',
         setName: card.set?.name ?? t('homeDynamic.tcg.unknown'),
         rarity: card.rarity ?? t('homeDynamic.tcg.unknown'),
         hp: card.hp ?? t('homeDynamic.tcg.unknown'),
       })),
-    [effectiveFeaturedPokemon, pokemonTcgQuery.data?.data, t],
+    [effectiveHomeFeaturedPokemon, pokemonTcgQuery.data?.data, t],
   );
 
   const spotlightDetailsQuery = usePokemonDetails(effectiveFeaturedPokemon);
@@ -310,24 +432,149 @@ export function useHomePageModel() {
   }, [tipKeys]);
 
   useEffect(() => {
-    if (spotlightCandidates.length <= 1) {
+    if (quickJumpCandidates.length === 0) {
       return;
     }
 
-    const timer = window.setInterval(() => {
-      setFeaturedPokemon((current) => {
-        const alternatives = spotlightCandidates.filter((entry) => entry.name !== current);
-        const source = alternatives.length > 0 ? alternatives : spotlightCandidates;
-        const randomPick = source[Math.floor(Math.random() * source.length)];
+    setHomeFeaturedPokemon((current) => {
+      if (quickJumpCandidates.some((entry) => entry.name === current)) {
+        return current;
+      }
 
-        return randomPick.name;
-      });
-    }, 12000);
+      return pickRandomPokemonName() ?? current;
+    });
+  }, [pickRandomPokemonName, quickJumpCandidates]);
+
+  useEffect(() => {
+    if (quickJumpCandidates.length <= 1) {
+      return;
+    }
+
+    if (pokemonTcgCards.length > 0 || pokemonTcgQuery.isFetching) {
+      return;
+    }
+
+    let cancelled = false;
+
+    void pickPokemonWithCards([effectiveHomeFeaturedPokemon, effectiveFeaturedPokemon]).then(
+      (nextPokemon) => {
+        if (!nextPokemon || cancelled) {
+          return;
+        }
+
+        setHomeFeaturedPokemon(nextPokemon);
+        setCarouselIndex(0);
+      },
+    );
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    effectiveFeaturedPokemon,
+    effectiveHomeFeaturedPokemon,
+    pickPokemonWithCards,
+    pokemonTcgCards.length,
+    pokemonTcgQuery.isFetching,
+    quickJumpCandidates.length,
+  ]);
+
+  useEffect(() => {
+    if (quickJumpCandidates.length === 0) {
+      return;
+    }
+
+    setLivePulsePokemon((current) => {
+      if (
+        quickJumpCandidates.some((entry) => entry.name === current) &&
+        current !== effectiveHomeFeaturedPokemon
+      ) {
+        return current;
+      }
+
+      return pickRandomPokemonName([effectiveHomeFeaturedPokemon]) ?? current;
+    });
+  }, [effectiveHomeFeaturedPokemon, pickRandomPokemonName, quickJumpCandidates]);
+
+  useEffect(() => {
+    if (quickJumpCandidates.length <= 1) {
+      return;
+    }
+
+    let isSelecting = false;
+
+    const timer = window.setInterval(() => {
+      if (isSelecting) {
+        return;
+      }
+
+      isSelecting = true;
+
+      void pickPokemonWithCards([effectiveHomeFeaturedPokemon, effectiveFeaturedPokemon])
+        .then((nextPokemon) => {
+          if (!nextPokemon) {
+            return;
+          }
+
+          setHomeFeaturedPokemon(nextPokemon);
+          setCarouselIndex(0);
+        })
+        .finally(() => {
+          isSelecting = false;
+        });
+    }, HOME_ROTATION_MS);
 
     return () => {
       window.clearInterval(timer);
     };
-  }, [spotlightCandidates]);
+  }, [
+    effectiveFeaturedPokemon,
+    effectiveHomeFeaturedPokemon,
+    pickPokemonWithCards,
+    quickJumpCandidates.length,
+  ]);
+
+  useEffect(() => {
+    if (quickJumpCandidates.length <= 1) {
+      return;
+    }
+
+    let isSelecting = false;
+
+    const timer = window.setInterval(() => {
+      if (isSelecting) {
+        return;
+      }
+
+      const nextPokemon = pickRandomPokemonName([
+        effectiveFeaturedPokemon,
+        effectiveHomeFeaturedPokemon,
+      ]);
+
+      if (!nextPokemon) {
+        return;
+      }
+
+      isSelecting = true;
+
+      void prefetchPokemonDetailsWithImage(nextPokemon)
+        .catch(() => undefined)
+        .finally(() => {
+          setLivePulsePokemon(nextPokemon);
+          isSelecting = false;
+        });
+    }, LIVE_PULSE_ROTATION_MS);
+
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [
+    effectiveFeaturedPokemon,
+    effectiveHomeFeaturedPokemon,
+    pickRandomPokemonName,
+    prefetchPokemonDetailsWithImage,
+    quickJumpCandidates.length,
+  ]);
 
   const localeCode = i18n.resolvedLanguage ?? i18n.language;
   const localizedClock = useMemo(
@@ -382,17 +629,24 @@ export function useHomePageModel() {
   );
 
   const randomizeSpotlight = () => {
-    if (spotlightCandidates.length === 0) {
+    if (quickJumpCandidates.length === 0) {
       return;
     }
 
-    const alternatives = spotlightCandidates.filter(
-      (entry) => entry.name !== effectiveFeaturedPokemon,
-    );
-    const source = alternatives.length > 0 ? alternatives : spotlightCandidates;
-    const randomPick = source[Math.floor(Math.random() * source.length)];
+    const nextPokemon = pickRandomPokemonName([
+      effectiveFeaturedPokemon,
+      effectiveHomeFeaturedPokemon,
+    ]);
 
-    setFeaturedPokemon(randomPick.name);
+    if (!nextPokemon) {
+      return;
+    }
+
+    void prefetchPokemonDetailsWithImage(nextPokemon)
+      .catch(() => undefined)
+      .finally(() => {
+        setLivePulsePokemon(nextPokemon);
+      });
   };
 
   const carouselSlides = useMemo(
@@ -418,7 +672,7 @@ export function useHomePageModel() {
 
     const timer = window.setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % carouselSlides.length);
-    }, 3600);
+    }, CARD_ROTATION_MS);
 
     return () => {
       window.clearInterval(timer);
@@ -525,12 +779,27 @@ export function useHomePageModel() {
   );
 
   const openCarouselPokemonInfo = useCallback(() => {
-    const pokemonName = effectiveFeaturedPokemon;
+    const cardName = activeSlide?.card.name ?? effectiveHomeFeaturedPokemon;
+    const normalizedCardName = ` ${cardName.toLowerCase().replaceAll('-', ' ')} `;
+
+    const matchedPokemon = quickJumpCandidates
+      .map((entry) => entry.name)
+      .filter((entryName) => normalizedCardName.includes(` ${entryName.replaceAll('-', ' ')} `))
+      .sort((left, right) => right.length - left.length)[0];
+
+    const pokemonName = matchedPokemon ?? effectiveHomeFeaturedPokemon;
 
     updateRouteActivity('spotlight');
     pushRecentSpotlight(pokemonName);
     void navigate({ to: '/pokedex/$pokemonName', params: { pokemonName } });
-  }, [effectiveFeaturedPokemon, navigate, pushRecentSpotlight, updateRouteActivity]);
+  }, [
+    activeSlide?.card.name,
+    effectiveHomeFeaturedPokemon,
+    navigate,
+    pushRecentSpotlight,
+    quickJumpCandidates,
+    updateRouteActivity,
+  ]);
 
   return {
     t,
