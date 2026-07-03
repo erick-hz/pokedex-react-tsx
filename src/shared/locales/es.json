@@ -7,6 +7,7 @@
     "pokedex": "Pokedex",
     "intel": "Inteligencia",
     "battleLab": "Laboratorio",
+    "resumeGenerator": "Generador de CV",
     "actions": {
       "openSpotlight": "Abrir página destacada",
       "openBattleLab": "Abrir en laboratorio",

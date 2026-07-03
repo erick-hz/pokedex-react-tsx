@@ -10,6 +10,7 @@ Pokedex web app built with React, TypeScript, and Vite, using PokeAPI as the dat
 - TanStack Router
 - TanStack Query
 - i18next + react-i18next
+- @react-pdf/renderer
 - ESLint
 
 ## Requirements
@@ -47,6 +48,29 @@ src/
   features/   # Feature modules (pokemon, public-apis, theme-toggle, language-switcher)
   shared/     # Shared UI components, config, and locales
 ```
+
+## Resume Generator
+
+- New route: `/resume-generator`
+- Access from the main navbar via `Resume Generator`
+- Fixed-field resume editor (no add/remove actions)
+- Live PDF preview rendered with React PDF
+- Downloadable PDF output from the same template
+
+Implemented template sections:
+
+- Header (name, role, contact)
+- Links
+- Employment History
+- Skills
+- Languages
+- Hobbies
+- Education
+
+Default profile links:
+
+- GitHub: https://github.com/erick-hz
+- Portfolio: https://erick-hz.vercel.app/
 
 ## TanStack Router Conventions
 

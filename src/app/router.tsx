@@ -5,6 +5,7 @@ import { HomePage } from '@app/routes/HomePage';
 import { NotFoundPage } from '@app/routes/NotFoundPage';
 import { PokedexPage } from '@app/routes/PokedexPage';
 import { PokemonIntelPage } from '@app/routes/PokemonIntelPage';
+import { ResumeGeneratorPage } from '@app/routes/ResumeGeneratorPage';
 import { PokemonSpotlightPage } from '@app/routes/PokemonSpotlightPage';
 import { RootLayout } from '@app/routes/RootLayout';
 import { battleLabSearchValidator, pokemonSearchValidator } from '@app/routes/searchValidators';
@@ -47,12 +48,19 @@ const battleLabRoute = createRoute({
   component: BattleLabPage,
 });
 
+const resumeGeneratorRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/resume-generator',
+  component: ResumeGeneratorPage,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   pokedexRoute,
   pokemonSpotlightRoute,
   intelRoute,
   battleLabRoute,
+  resumeGeneratorRoute,
 ]);
 
 export const router = createRouter({
