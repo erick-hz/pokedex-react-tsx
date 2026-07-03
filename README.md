@@ -1,6 +1,14 @@
-# Pokedex React + TypeScript
+# Pokedex React resume generetor
 
 Pokedex web app built with React, TypeScript, and Vite, using PokeAPI as the data source.
+
+Pokedex React resume generetor.
+
+Fuck Resume.io.
+
+Scammers, this is a free tool.
+
+<img src="public/duck.jpg" alt="dck" width="90" />
 
 ## Stack
 
@@ -50,6 +58,8 @@ src/
 ```
 
 ## Resume Generator
+
+This app includes a dynamic resume generator, and you can download your CV for free.
 
 - New route: `/resume-generator`
 - Access from the main navbar via `Resume Generator`

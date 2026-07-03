@@ -259,7 +259,7 @@ function ResumePdfDocument({
         <View style={pdfStyles.header}>
           <Text style={pdfStyles.headerTitle}>
             {fullName || 'Your Name'}
-            {headline ? `, ${headline}` : ''}
+            {headline ? ` - ${headline}` : ''}
           </Text>
           <Text style={pdfStyles.headerMeta}>
             {[cityCountry, phone, email].filter(Boolean).join(', ') ||
