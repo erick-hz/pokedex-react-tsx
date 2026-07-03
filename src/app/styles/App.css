@@ -1589,8 +1589,8 @@ body {
 }
 
 .resume-form-panel input:focus {
-  border-color: rgba(220, 38, 38, 0.4);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.14);
+  border-color: rgba(34, 197, 94, 0.45);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
 }
 
 .resume-form-section {

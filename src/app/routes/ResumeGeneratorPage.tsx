@@ -5,7 +5,6 @@ import {
   Font,
   Link as PdfLink,
   Page,
-  PDFDownloadLink,
   StyleSheet,
   Text,
   View,
@@ -364,7 +363,7 @@ function ResumePdfDocument({
 export function ResumeGeneratorPage() {
   const [fullName, setFullName] = useState('Erick Hernandez');
   const [headline, setHeadline] = useState('Software Developer');
-  const [cityCountry, setCityCountry] = useState('Mexico City 03440, Mexico');
+  const [cityCountry, setCityCountry] = useState('Mexico City');
   const [phone, setPhone] = useState('+52 5575251994');
   const [email, setEmail] = useState('yerickk8@gmail.com');
 
@@ -464,12 +463,6 @@ export function ResumeGeneratorPage() {
   const updateEducation = (id: string, patch: Partial<EducationItem>) => {
     setEducation((prev) => prev.map((item) => (item.id === id ? { ...item, ...patch } : item)));
   };
-
-  const safeName = fullName
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-');
-  const resumeFileName = safeName ? `${safeName}-resume.pdf` : 'resume.pdf';
 
   const resumeDocument = (
     <ResumePdfDocument
@@ -688,38 +681,43 @@ export function ResumeGeneratorPage() {
       </section>
 
       <section className="panel resume-preview-panel" aria-labelledby="resume-preview-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">Preview</p>
-            <h2 id="resume-preview-title">Resume Generator</h2>
-          </div>
+        <BlobProvider document={resumeDocument}>
+          {({ url, loading }) => (
+            <>
+              <div className="panel-header">
+                <div>
+                  <p className="eyebrow">Preview</p>
+                  <h2 id="resume-preview-title">Resume Generator</h2>
+                </div>
 
-          <PDFDownloadLink
-            document={resumeDocument}
-            fileName={resumeFileName}
-            className="route-cta route-cta-primary"
-          >
-            {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
-          </PDFDownloadLink>
-        </div>
+                {loading || !url ? (
+                  <span className="route-cta route-cta-primary">Generating PDF...</span>
+                ) : (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="route-cta route-cta-primary"
+                  >
+                    Download PDF
+                  </a>
+                )}
+              </div>
 
-        <div className="resume-preview-frame">
-          <BlobProvider document={resumeDocument}>
-            {({ url, loading }) => {
-              if (loading || !url) {
-                return <p className="resume-pdf-loading">Rendering preview...</p>;
-              }
-
-              return (
-                <iframe
-                  className="resume-pdf-iframe"
-                  title="Resume preview"
-                  src={`${url}#toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit`}
-                />
-              );
-            }}
-          </BlobProvider>
-        </div>
+              <div className="resume-preview-frame">
+                {loading || !url ? (
+                  <p className="resume-pdf-loading">Rendering preview...</p>
+                ) : (
+                  <iframe
+                    className="resume-pdf-iframe"
+                    title="Resume preview"
+                    src={`${url}#toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit`}
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </BlobProvider>
       </section>
     </section>
   );
