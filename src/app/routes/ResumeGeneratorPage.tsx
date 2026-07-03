@@ -423,6 +423,7 @@ export function ResumeGeneratorPage() {
 
   const [languages, setLanguages] = useState<string[]>(['English', 'Spanish', 'Japanese']);
   const [hobbies, setHobbies] = useState('Traveling - Fitness - Music - Reading');
+  const [experiencePage, setExperiencePage] = useState(0);
 
   const [education, setEducation] = useState<EducationItem[]>([
     {
@@ -462,6 +463,20 @@ export function ResumeGeneratorPage() {
 
   const updateEducation = (id: string, patch: Partial<EducationItem>) => {
     setEducation((prev) => prev.map((item) => (item.id === id ? { ...item, ...patch } : item)));
+  };
+
+  const totalExperiences = experiences.length;
+  const activeExperienceIndex = Math.min(experiencePage, Math.max(totalExperiences - 1, 0));
+  const activeExperience = experiences[activeExperienceIndex];
+  const canGoToPreviousExperience = activeExperienceIndex > 0;
+  const canGoToNextExperience = activeExperienceIndex < totalExperiences - 1;
+
+  const goToPreviousExperience = () => {
+    setExperiencePage((prev) => Math.max(prev - 1, 0));
+  };
+
+  const goToNextExperience = () => {
+    setExperiencePage((prev) => Math.min(prev + 1, totalExperiences - 1));
   };
 
   const resumeDocument = (
@@ -537,44 +552,71 @@ export function ResumeGeneratorPage() {
         <section className="resume-form-section" aria-label="Employment history">
           <div className="resume-form-section-header">
             <h3>Employment history</h3>
+            <div
+              className="resume-section-paginator"
+              role="group"
+              aria-label="Employment history pages"
+            >
+              <button
+                type="button"
+                className="route-pill"
+                onClick={goToPreviousExperience}
+                disabled={!canGoToPreviousExperience}
+              >
+                Previous
+              </button>
+              <span className="resume-paginator-status" aria-live="polite">
+                {totalExperiences === 0
+                  ? '0 / 0'
+                  : `${activeExperienceIndex + 1} / ${totalExperiences}`}
+              </span>
+              <button
+                type="button"
+                className="route-pill"
+                onClick={goToNextExperience}
+                disabled={!canGoToNextExperience}
+              >
+                Next
+              </button>
+            </div>
           </div>
 
-          {experiences.map((experience) => (
-            <article key={experience.id} className="resume-dynamic-card">
+          {activeExperience ? (
+            <article key={activeExperience.id} className="resume-dynamic-card">
               <div className="resume-form-grid">
                 <label>
                   Date range
                   <input
-                    value={experience.dateRange}
+                    value={activeExperience.dateRange}
                     onChange={(event) =>
-                      updateExperience(experience.id, { dateRange: event.target.value })
+                      updateExperience(activeExperience.id, { dateRange: event.target.value })
                     }
                   />
                 </label>
                 <label>
                   Role
                   <input
-                    value={experience.role}
+                    value={activeExperience.role}
                     onChange={(event) =>
-                      updateExperience(experience.id, { role: event.target.value })
+                      updateExperience(activeExperience.id, { role: event.target.value })
                     }
                   />
                 </label>
                 <label>
                   Company
                   <input
-                    value={experience.company}
+                    value={activeExperience.company}
                     onChange={(event) =>
-                      updateExperience(experience.id, { company: event.target.value })
+                      updateExperience(activeExperience.id, { company: event.target.value })
                     }
                   />
                 </label>
                 <label>
                   Location
                   <input
-                    value={experience.location}
+                    value={activeExperience.location}
                     onChange={(event) =>
-                      updateExperience(experience.id, { location: event.target.value })
+                      updateExperience(activeExperience.id, { location: event.target.value })
                     }
                   />
                 </label>
@@ -582,20 +624,22 @@ export function ResumeGeneratorPage() {
 
               <div className="resume-bullets-editor">
                 <p>Bullet points</p>
-                {experience.bullets.map((bullet, bulletIndex) => (
-                  <div key={`${experience.id}-${bulletIndex}`} className="resume-inline-grid">
+                {activeExperience.bullets.map((bullet, bulletIndex) => (
+                  <div key={`${activeExperience.id}-${bulletIndex}`} className="resume-inline-grid">
                     <input
                       placeholder="Describe your impact"
                       value={bullet}
                       onChange={(event) =>
-                        updateExperienceBullet(experience.id, bulletIndex, event.target.value)
+                        updateExperienceBullet(activeExperience.id, bulletIndex, event.target.value)
                       }
                     />
                   </div>
                 ))}
               </div>
             </article>
-          ))}
+          ) : (
+            <p className="resume-empty-state">No employment entries available.</p>
+          )}
         </section>
 
         <section className="resume-form-section" aria-label="Skills">
