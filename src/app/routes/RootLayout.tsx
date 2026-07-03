@@ -82,6 +82,13 @@ export function RootLayout() {
           >
             {t('routes.battleLab')}
           </Link>
+          <Link
+            to="/resume-generator"
+            className="route-nav-link"
+            activeProps={{ className: 'route-nav-link active' }}
+          >
+            {t('routes.resumeGenerator')}
+          </Link>
         </nav>
 
         <div className="header-actions">
