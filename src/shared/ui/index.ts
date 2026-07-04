@@ -4,4 +4,9 @@ export { default as StatCard } from './StatCard';
 export { default as CopyBlock } from './CopyBlock';
 export { default as FallbackImage } from './FallbackImage';
 export { default as PokemonPreviewLink } from './PokemonPreviewLink';
-export { RouteActionButton, RouteActionLink, RoutePillButton } from './RouteActions';
+export {
+  DangerRoutePillButton,
+  RouteActionButton,
+  RouteActionLink,
+  RoutePillButton,
+} from './RouteActions';

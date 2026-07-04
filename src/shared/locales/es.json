@@ -221,5 +221,59 @@
     "none": "Ninguno",
     "error": "No se pueden cargar los datos en este momento.",
     "loadingLine": "Cargando cadena evolutiva..."
+  },
+  "resumeGenerator": {
+    "form": {
+      "eyebrow": "Constructor de CV",
+      "title": "Campos dinámicos",
+      "resetAll": "Restablecer todo",
+      "previewEyebrow": "Vista previa",
+      "previewTitle": "Generador de CV",
+      "generatingPdf": "Generando PDF...",
+      "downloadPdf": "Descargar PDF",
+      "renderingPreview": "Renderizando vista previa...",
+      "previewFrameTitle": "Vista previa del CV"
+    },
+    "sections": {
+      "links": "Enlaces",
+      "employmentHistory": "Experiencia laboral",
+      "employmentHistoryPages": "Páginas de experiencia laboral",
+      "skills": "Habilidades",
+      "languages": "Idiomas",
+      "languagesAndHobbies": "Idiomas y pasatiempos",
+      "hobbies": "Pasatiempos",
+      "education": "Educación"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "headline": "Título profesional",
+      "cityCountry": "Ciudad / País",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "linkLabelPlaceholder": "Etiqueta",
+      "linkUrlPlaceholder": "URL",
+      "dateRange": "Rango de fechas",
+      "institution": "Institución",
+      "degree": "Título",
+      "role": "Rol",
+      "company": "Empresa",
+      "location": "Ubicación",
+      "bulletPoints": "Puntos clave",
+      "bulletPlaceholder": "Describe tu impacto",
+      "skillPlaceholder": "Habilidad",
+      "languagePlaceholder": "Idioma"
+    },
+    "actions": {
+      "removeBlock": "Eliminar bloque",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "states": {
+      "noEmploymentEntries": "No hay registros de experiencia laboral disponibles."
+    },
+    "pdf": {
+      "fallbackName": "Tu nombre",
+      "fallbackMeta": "Ciudad, País, Teléfono, Correo"
+    }
   }
 }

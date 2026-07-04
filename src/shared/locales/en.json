@@ -221,5 +221,59 @@
     "none": "None",
     "error": "Unable to load data right now.",
     "loadingLine": "Loading evolution chain..."
+  },
+  "resumeGenerator": {
+    "form": {
+      "eyebrow": "Resume Builder",
+      "title": "Dynamic Fields",
+      "resetAll": "Reset all",
+      "previewEyebrow": "Preview",
+      "previewTitle": "Resume Generator",
+      "generatingPdf": "Generating PDF...",
+      "downloadPdf": "Download PDF",
+      "renderingPreview": "Rendering preview...",
+      "previewFrameTitle": "Resume preview"
+    },
+    "sections": {
+      "links": "Links",
+      "employmentHistory": "Employment history",
+      "employmentHistoryPages": "Employment history pages",
+      "skills": "Skills",
+      "languages": "Languages",
+      "languagesAndHobbies": "Languages and hobbies",
+      "hobbies": "Hobbies",
+      "education": "Education"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "headline": "Headline",
+      "cityCountry": "City / Country",
+      "phone": "Phone",
+      "email": "Email",
+      "linkLabelPlaceholder": "Label",
+      "linkUrlPlaceholder": "URL",
+      "dateRange": "Date range",
+      "institution": "Institution",
+      "degree": "Degree",
+      "role": "Role",
+      "company": "Company",
+      "location": "Location",
+      "bulletPoints": "Bullet points",
+      "bulletPlaceholder": "Describe your impact",
+      "skillPlaceholder": "Skill",
+      "languagePlaceholder": "Language"
+    },
+    "actions": {
+      "removeBlock": "Remove block",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "states": {
+      "noEmploymentEntries": "No employment entries available."
+    },
+    "pdf": {
+      "fallbackName": "Your Name",
+      "fallbackMeta": "City, Country, Phone, Email"
+    }
   }
 }
