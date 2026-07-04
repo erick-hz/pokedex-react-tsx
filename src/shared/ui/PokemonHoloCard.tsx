@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useRef, type CSSProperties } from 'react';
 
 import FallbackImage from './FallbackImage';
 
@@ -13,27 +13,25 @@ type HoloCardStyle = CSSProperties & {
 };
 
 export default function PokemonHoloCard({ image, name, className }: PokemonHoloCardProps) {
-  const [activeImage, setActiveImage] = useState(image);
-
-  useEffect(() => {
-    setActiveImage(image);
-  }, [image]);
+  const imageCardRef = useRef<HTMLDivElement>(null);
 
   const cardStyle: HoloCardStyle = {
-    '--front': `url("${activeImage}")`,
+    '--front': `url("${image}")`,
   };
 
   return (
     <div className={`pokemon-card-shell ${className ?? ''}`.trim()}>
-      <div className="pokemon-image-card" style={cardStyle}>
+      <div ref={imageCardRef} className="pokemon-image-card" style={cardStyle}>
         <FallbackImage
-          src={activeImage}
+          src={image}
           alt={name}
           className="pokemon-image-card__image"
           loading="lazy"
           decoding="async"
           draggable={false}
-          onResolvedSrcChange={setActiveImage}
+          onResolvedSrcChange={(resolvedSrc) => {
+            imageCardRef.current?.style.setProperty('--front', `url("${resolvedSrc}")`);
+          }}
         />
       </div>
     </div>

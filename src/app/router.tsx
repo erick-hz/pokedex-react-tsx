@@ -1,14 +1,23 @@
-import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  lazyRouteComponent,
+} from '@tanstack/react-router';
 
 import { BattleLabPage } from '@app/routes/BattleLabPage';
 import { HomePage } from '@app/routes/HomePage';
 import { NotFoundPage } from '@app/routes/NotFoundPage';
 import { PokedexPage } from '@app/routes/PokedexPage';
 import { PokemonIntelPage } from '@app/routes/PokemonIntelPage';
-import { ResumeGeneratorPage } from '@app/routes/ResumeGeneratorPage';
 import { PokemonSpotlightPage } from '@app/routes/PokemonSpotlightPage';
 import { RootLayout } from '@app/routes/RootLayout';
 import { battleLabSearchValidator, pokemonSearchValidator } from '@app/routes/searchValidators';
+
+const ResumeGeneratorPage = lazyRouteComponent(
+  () => import('@app/routes/ResumeGeneratorPage'),
+  'ResumeGeneratorPage',
+);
 
 const rootRoute = createRootRoute({
   component: RootLayout,
