@@ -1,14 +1,12 @@
-# Pokedex React resume generetor
+# Pokedex React Resume Generator
 
 Pokedex web app built with React, TypeScript, and Vite, using PokeAPI as the data source.
-
-Pokedex React resume generetor.
 
 Fuck Resume.io.
 
 Scammers, this is a free tool.
 
-<img src="public/duck.jpg" alt="dck" width="90" />
+<img src="public/duck.jpg" alt="duck mascot" width="90" />
 
 ## Stack
 
@@ -91,7 +89,7 @@ Default profile links:
 
 ## TanStack Query Conventions
 
-- Query keys are defined by feature modules and must include all cache dimensions (for example language and pokemon name).
+- Query keys are defined by feature modules and must include only dimensions that affect fetched data.
 - Global query defaults are configured in src/app/main.tsx.
 - Query cache is persisted in localStorage through PersistQueryClientProvider.
 - Current defaults:
@@ -112,7 +110,9 @@ Default profile links:
 
 If you want to contribute, open your PR using this template:
 
-docs/PULL_REQUEST_TEMPLATE.md
+[docs/PULL_REQUEST_TEMPLATE.md](docs/PULL_REQUEST_TEMPLATE.md)
+
+Use that template as the PR description and complete every checklist item before requesting review.
 
 Please complete the checklist and run `npm run lint`, `npm run test`, and `npm run build` before submitting.
 

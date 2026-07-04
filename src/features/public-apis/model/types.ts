@@ -20,6 +20,12 @@ export interface PokemonSpeciesResponse {
     url: string;
   };
   flavor_text_entries: PokemonFlavorTextEntry[];
+  names?: Array<{
+    name: string;
+    language: {
+      name: string;
+    };
+  }>;
   genera: Array<{
     genus: string;
     language: {

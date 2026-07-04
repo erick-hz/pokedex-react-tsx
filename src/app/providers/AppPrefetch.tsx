@@ -24,7 +24,7 @@ export function AppPrefetch() {
 
     const prefetchAll = async () => {
       await queryClient.prefetchQuery({
-        queryKey: pokemonKeys.list(language),
+        queryKey: pokemonKeys.list(),
         queryFn: () => fetchPokemonList(PREFETCH_POKEMON_LIMIT),
         staleTime: 1000 * 60 * 5,
         gcTime: 1000 * 60 * 30,
@@ -34,7 +34,7 @@ export function AppPrefetch() {
         return;
       }
 
-      const pokemonList = queryClient.getQueryData<PokemonListResponse>(pokemonKeys.list(language));
+      const pokemonList = queryClient.getQueryData<PokemonListResponse>(pokemonKeys.list());
       const names = (pokemonList?.results ?? [])
         .slice(0, PREFETCH_DETAIL_COUNT)
         .map((entry) => entry.name);

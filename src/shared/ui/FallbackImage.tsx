@@ -1,4 +1,4 @@
-import { useEffect, useState, type ImgHTMLAttributes } from 'react';
+import { useState, type ImgHTMLAttributes } from 'react';
 
 type FallbackImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> & {
   src: string;
@@ -11,25 +11,24 @@ export default function FallbackImage({
   fallbackSrc = '/200w.gif',
   onResolvedSrcChange,
   onError,
+  onLoad,
   ...imgProps
 }: FallbackImageProps) {
-  const [currentSrc, setCurrentSrc] = useState(src);
-
-  useEffect(() => {
-    setCurrentSrc(src);
-  }, [src]);
-
-  useEffect(() => {
-    onResolvedSrcChange?.(currentSrc);
-  }, [currentSrc, onResolvedSrcChange]);
+  const [failedSource, setFailedSource] = useState<string | null>(null);
+  const effectiveSrc = failedSource === src ? fallbackSrc : src;
 
   return (
     <img
       {...imgProps}
-      src={currentSrc}
+      src={effectiveSrc}
+      onLoad={(event) => {
+        onResolvedSrcChange?.(event.currentTarget.currentSrc || effectiveSrc);
+        onLoad?.(event);
+      }}
       onError={(event) => {
-        if (currentSrc !== fallbackSrc) {
-          setCurrentSrc(fallbackSrc);
+        if (failedSource !== src) {
+          setFailedSource(src);
+          onResolvedSrcChange?.(fallbackSrc);
         }
 
         onError?.(event);

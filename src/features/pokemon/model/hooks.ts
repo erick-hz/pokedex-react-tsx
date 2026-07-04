@@ -8,11 +8,8 @@ import { pokemonKeys } from './queryKeys';
 const POKEMON_LIMIT = 1000;
 
 export function usePokemonList() {
-  const { i18n } = useTranslation();
-  const language = i18n.resolvedLanguage ?? i18n.language;
-
   return useQuery({
-    queryKey: pokemonKeys.list(language),
+    queryKey: pokemonKeys.list(),
     queryFn: () => fetchPokemonList(POKEMON_LIMIT),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,

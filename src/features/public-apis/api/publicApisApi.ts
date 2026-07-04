@@ -31,6 +31,8 @@ type TypeDetailResponse = {
   };
 };
 
+type DamageRelations = TypeDetailResponse['damage_relations'];
+
 function getLanguageCode(language: string) {
   if (language.startsWith('es')) return 'es';
   if (language.startsWith('ja')) return 'ja';
@@ -111,12 +113,8 @@ async function collectLocalizedEvolutionNames(
   language: string,
 ): Promise<string[]> {
   const localizedSpecies = await fetchPokemonSpeciesData(node.species.name);
-  const lang = getLanguageCode(language);
-
-  const currentName =
-    localizedSpecies.genera.find((entry) => entry.language.name === lang)?.genus ??
-    localizedSpecies.genera.find((entry) => entry.language.name === 'en')?.genus ??
-    titleCasePokemonName(node.species.name);
+  const fallbackName = titleCasePokemonName(node.species.name);
+  const currentName = getLocalizedName(localizedSpecies.names ?? [], language, fallbackName);
 
   if (node.evolves_to.length === 0) {
     return [currentName];
@@ -127,6 +125,36 @@ async function collectLocalizedEvolutionNames(
   );
 
   return [currentName, ...evolvedNames.flat()];
+}
+
+function collectAttackTypeNames(damageRelationsList: DamageRelations[]): string[] {
+  const typeNames = new Set<string>();
+
+  for (const relations of damageRelationsList) {
+    relations.double_damage_from.forEach((entry) => typeNames.add(entry.name));
+    relations.half_damage_from.forEach((entry) => typeNames.add(entry.name));
+    relations.no_damage_from.forEach((entry) => typeNames.add(entry.name));
+  }
+
+  return Array.from(typeNames);
+}
+
+function resolveDamageMultiplier(typeName: string, damageRelationsList: DamageRelations[]): number {
+  return damageRelationsList.reduce((multiplier, relations) => {
+    if (relations.no_damage_from.some((entry) => entry.name === typeName)) {
+      return 0;
+    }
+
+    if (relations.double_damage_from.some((entry) => entry.name === typeName)) {
+      return multiplier * 2;
+    }
+
+    if (relations.half_damage_from.some((entry) => entry.name === typeName)) {
+      return multiplier * 0.5;
+    }
+
+    return multiplier;
+  }, 1);
 }
 
 export async function fetchPokemonCompanionData(
@@ -192,20 +220,36 @@ export async function fetchPokemonBattleIntel(
     }),
   );
 
-  const weaknesses = new Set<string>();
-  const resistances = new Set<string>();
-  const immunities = new Set<string>();
+  const relationsByType = damageRelationsList.map((entry) => entry.damageRelations);
 
-  for (const relation of damageRelationsList) {
-    relation.damageRelations.double_damage_from.forEach((entry) => weaknesses.add(entry.name));
-    relation.damageRelations.half_damage_from.forEach((entry) => resistances.add(entry.name));
-    relation.damageRelations.no_damage_from.forEach((entry) => immunities.add(entry.name));
+  const attackTypeNames = collectAttackTypeNames(relationsByType);
+
+  const weaknesses: string[] = [];
+  const resistances: string[] = [];
+  const immunities: string[] = [];
+
+  for (const typeName of attackTypeNames) {
+    const multiplier = resolveDamageMultiplier(typeName, relationsByType);
+
+    if (multiplier === 0) {
+      immunities.push(typeName);
+      continue;
+    }
+
+    if (multiplier > 1) {
+      weaknesses.push(typeName);
+      continue;
+    }
+
+    if (multiplier < 1) {
+      resistances.push(typeName);
+    }
   }
 
   const [weaknessesLocalized, resistancesLocalized, immunitiesLocalized] = await Promise.all([
-    localizeTypeNames(Array.from(weaknesses), language),
-    localizeTypeNames(Array.from(resistances), language),
-    localizeTypeNames(Array.from(immunities), language),
+    localizeTypeNames(weaknesses, language),
+    localizeTypeNames(resistances, language),
+    localizeTypeNames(immunities, language),
   ]);
 
   return {
