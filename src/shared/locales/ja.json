@@ -221,5 +221,59 @@
     "none": "なし",
     "error": "現在データを読み込めません。",
     "loadingLine": "進化チェーンを読み込み中..."
+  },
+  "resumeGenerator": {
+    "form": {
+      "eyebrow": "履歴書ビルダー",
+      "title": "動的フィールド",
+      "resetAll": "すべてリセット",
+      "previewEyebrow": "プレビュー",
+      "previewTitle": "履歴書ジェネレーター",
+      "generatingPdf": "PDF を生成中...",
+      "downloadPdf": "PDF をダウンロード",
+      "renderingPreview": "プレビューを描画中...",
+      "previewFrameTitle": "履歴書プレビュー"
+    },
+    "sections": {
+      "links": "リンク",
+      "employmentHistory": "職歴",
+      "employmentHistoryPages": "職歴ページ",
+      "skills": "スキル",
+      "languages": "言語",
+      "languagesAndHobbies": "言語と趣味",
+      "hobbies": "趣味",
+      "education": "学歴"
+    },
+    "fields": {
+      "fullName": "氏名",
+      "headline": "見出し",
+      "cityCountry": "市 / 国",
+      "phone": "電話番号",
+      "email": "メール",
+      "linkLabelPlaceholder": "ラベル",
+      "linkUrlPlaceholder": "URL",
+      "dateRange": "期間",
+      "institution": "学校名",
+      "degree": "学位",
+      "role": "役職",
+      "company": "会社",
+      "location": "勤務地",
+      "bulletPoints": "箇条書き",
+      "bulletPlaceholder": "成果を説明してください",
+      "skillPlaceholder": "スキル",
+      "languagePlaceholder": "言語"
+    },
+    "actions": {
+      "removeBlock": "ブロックを削除",
+      "previous": "前へ",
+      "next": "次へ"
+    },
+    "states": {
+      "noEmploymentEntries": "利用可能な職歴はありません。"
+    },
+    "pdf": {
+      "fallbackName": "あなたの名前",
+      "fallbackMeta": "市、国、電話番号、メール"
+    }
   }
 }

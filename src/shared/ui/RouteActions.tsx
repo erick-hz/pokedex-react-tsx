@@ -19,6 +19,8 @@ type RouteActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 type RoutePillButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
+type DangerRoutePillButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
 const toneClassName: Record<RouteActionTone, string> = {
   primary: 'route-cta-primary',
   muted: 'route-cta-muted',
@@ -67,5 +69,22 @@ export function RoutePillButton({ children, className, ...props }: RoutePillButt
     <button {...props} className={['route-pill', className].filter(Boolean).join(' ')}>
       {children}
     </button>
+  );
+}
+
+export function DangerRoutePillButton({
+  children,
+  className,
+  ...props
+}: DangerRoutePillButtonProps) {
+  return (
+    <RoutePillButton
+      {...props}
+      className={['route-pill-danger', 'route-pill-danger-compact', className]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      {children}
+    </RoutePillButton>
   );
 }

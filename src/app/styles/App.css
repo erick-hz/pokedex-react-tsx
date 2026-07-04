@@ -664,6 +664,11 @@ body {
   transition: all 0.2s ease;
 }
 
+.route-pill-compact {
+  padding: 6px 10px;
+  font-size: 0.92rem;
+}
+
 .route-pill:hover {
   background: var(--surface-muted);
   transform: translateY(-1px);
@@ -673,6 +678,33 @@ body {
   color: #ffffff;
   background: var(--primary);
   border-color: transparent;
+}
+
+.route-pill-success {
+  color: #f0fff4;
+  background: #166534;
+  border-color: #1f7a3f;
+}
+
+.route-pill-success:hover {
+  background: #1d7a41;
+  border-color: #27914c;
+}
+
+.route-pill-danger {
+  color: #fff8f8;
+  background: #6b1f2b;
+  border-color: #7f2d3a;
+}
+
+.route-pill-danger-compact {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+.route-pill-danger:hover {
+  background: #812634;
+  border-color: #9d3948;
 }
 
 .route-photo-grid {
@@ -1616,6 +1648,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 8px;
 }
 
 .resume-paginator-status {

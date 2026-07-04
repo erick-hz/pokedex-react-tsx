@@ -1,6 +1,6 @@
-# Pokedex React Resume Generator
+# React TSX App
 
-Pokedex web app built with React, TypeScript, and Vite, using PokeAPI as the data source.
+React + TypeScript + Vite application with TanStack Router, TanStack Query, i18next, and a resume generator built with React PDF.
 
 Fuck Resume.io.
 
@@ -51,6 +51,7 @@ App URL: http://localhost:5173
 ```text
 src/
   app/        # App bootstrap, router, routes, and global styles
+    routes/   # Route pages and route-specific components
   features/   # Feature modules (pokemon, public-apis, theme-toggle, language-switcher)
   shared/     # Shared UI components, config, and locales
 ```
@@ -61,7 +62,8 @@ This app includes a dynamic resume generator, and you can download your CV for f
 
 - New route: `/resume-generator`
 - Access from the main navbar via `Resume Generator`
-- Fixed-field resume editor (no add/remove actions)
+- Route-level split under `src/app/routes/resume-generator/`
+- Form state is isolated in a dedicated hook and the PDF preview/template is componentized
 - Live PDF preview rendered with React PDF
 - Downloadable PDF output from the same template
 

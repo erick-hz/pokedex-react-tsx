@@ -11,6 +11,11 @@ import i18n from '@shared/config/i18n';
 import { AppPrefetch } from '@app/providers/AppPrefetch';
 import { router } from '@app/router';
 
+console.log(
+  '%c /\\_/\\  \n( o.o ) \n > ^ <   ~ Yerick',
+  'color: purple; font-size: 14px; font-weight: bold;',
+);
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
