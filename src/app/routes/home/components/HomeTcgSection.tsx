@@ -1,5 +1,11 @@
 import type { HomePageModel } from '@app/routes/home/useHomePageModel';
-import { CopyBlock, FallbackImage, RouteActionButton, SectionCard } from '@shared/ui';
+import {
+  CopyBlock,
+  FallbackImage,
+  RouteActionButton,
+  SectionCard,
+  StatusMessage,
+} from '@shared/ui';
 
 type HomeTcgSectionProps = Pick<
   HomePageModel,
@@ -105,9 +111,9 @@ export function HomeTcgSection({
       <p className="route-recommend-chip">{recommendationText}</p>
 
       {pokemonTcgQuery.isLoading && !activeSlide ? (
-        <p className="route-home-copy">{t('homeDynamic.tcg.loading')}</p>
+        <StatusMessage>{t('homeDynamic.tcg.loading')}</StatusMessage>
       ) : pokemonTcgQuery.isError && !activeSlide ? (
-        <p className="route-home-copy">{t('homeDynamic.tcg.error')}</p>
+        <StatusMessage>{t('homeDynamic.tcg.error')}</StatusMessage>
       ) : activeSlide ? (
         <div
           className="route-carousel"
@@ -130,7 +136,7 @@ export function HomeTcgSection({
           </div>
         </div>
       ) : (
-        <p className="route-home-copy">{t('homeDynamic.tcg.empty')}</p>
+        <StatusMessage>{t('homeDynamic.tcg.empty')}</StatusMessage>
       )}
     </SectionCard>
   );

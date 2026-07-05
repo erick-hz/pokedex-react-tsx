@@ -1,5 +1,11 @@
 import type { HomePageModel } from '@app/routes/home/useHomePageModel';
-import { CopyBlock, PokemonPreviewLink, SectionCard } from '@shared/ui';
+import {
+  CopyBlock,
+  PaginationControls,
+  PokemonPreviewLink,
+  SectionCard,
+  StatusMessage,
+} from '@shared/ui';
 
 type HomeGallerySectionProps = Pick<
   HomePageModel,
@@ -119,29 +125,20 @@ function GalleryPager({
   }
 
   return (
-    <div className="route-gallery-pager" aria-label={t('homeDynamic.search.paginationLabel')}>
-      <button
-        type="button"
-        className="route-search-clear"
-        onClick={goToPreviousGalleryPage}
-        disabled={galleryPage === 1}
-      >
-        {t('homeDynamic.search.prev')}
-      </button>
-
-      <p className="route-gallery-page-text">
-        {t('homeDynamic.search.page', { current: galleryPage, total: totalGalleryPages })}
-      </p>
-
-      <button
-        type="button"
-        className="route-search-clear"
-        onClick={goToNextGalleryPage}
-        disabled={galleryPage === totalGalleryPages}
-      >
-        {t('homeDynamic.search.next')}
-      </button>
-    </div>
+    <PaginationControls
+      ariaLabel={t('homeDynamic.search.paginationLabel')}
+      className="route-gallery-pager"
+      previousButtonClassName="route-search-clear"
+      nextButtonClassName="route-search-clear"
+      statusClassName="route-gallery-page-text"
+      previousLabel={t('homeDynamic.search.prev')}
+      nextLabel={t('homeDynamic.search.next')}
+      onPrevious={goToPreviousGalleryPage}
+      onNext={goToNextGalleryPage}
+      isPreviousDisabled={galleryPage === 1}
+      isNextDisabled={galleryPage === totalGalleryPages}
+      status={t('homeDynamic.search.page', { current: galleryPage, total: totalGalleryPages })}
+    />
   );
 }
 
@@ -180,9 +177,9 @@ export function HomeGallerySection({
       />
 
       {filteredGalleryItems.length === 0 ? (
-        <p className="route-search-empty">
+        <StatusMessage className="route-search-empty">
           {t('homeDynamic.search.empty', { query: gallerySearchTerm.trim() })}
-        </p>
+        </StatusMessage>
       ) : null}
 
       <GalleryPager

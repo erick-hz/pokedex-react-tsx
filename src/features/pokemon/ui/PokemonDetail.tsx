@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePokemonDetails } from '@features/pokemon/model/hooks';
-import { PokemonHoloCard, SectionCard } from '@shared/ui';
+import { PokemonHoloCard, SectionCard, StatusMessage } from '@shared/ui';
 import { StatCard } from '@shared/ui';
 
 type PokemonDetailProps = {
@@ -49,7 +49,7 @@ export function PokemonDetail({ selectedPokemon }: PokemonDetailProps) {
   return (
     <SectionCard eyebrow={t('profile')} title={data?.displayName ?? 'Pokémon'}>
       {isLoading ? (
-        <p>{t('loadingDetails')}</p>
+        <StatusMessage className="pokemon-loading-text">{t('loadingDetails')}</StatusMessage>
       ) : data ? (
         <>
           <div>

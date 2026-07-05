@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
 
-import FallbackImage from './FallbackImage';
+import FallbackImage from '@shared/ui/FallbackImage';
 
 type PokemonHoloCardProps = {
   image: string;

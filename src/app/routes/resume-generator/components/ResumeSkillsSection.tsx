@@ -1,7 +1,7 @@
-import type { ResumeGeneratorModel } from '../useResumeGeneratorModel';
+import type { ResumeGeneratorModel } from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
 import { DangerRoutePillButton } from '@shared/ui';
-import { FIELD_LIMITS } from '../useResumeGeneratorModel';
+import { FIELD_LIMITS } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumeSkillsSectionProps = Pick<
   ResumeGeneratorModel,

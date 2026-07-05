@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SectionCard } from '@shared/ui';
+import { PaginationControls, SectionCard, StatusMessage } from '@shared/ui';
 import { usePokemonList } from '@features/pokemon/model/hooks';
 
 type PokemonListProps = {
@@ -29,7 +29,7 @@ export function PokemonList({ selectedPokemon, onSelectPokemon }: PokemonListPro
     <SectionCard eyebrow={t('pokedex')} title={t('selectPokemon')} className="panel-large">
       <div className="pokemon-list">
         {isLoading ? (
-          <p>{t('loadingPokemon')}</p>
+          <StatusMessage className="pokemon-loading-text">{t('loadingPokemon')}</StatusMessage>
         ) : (
           paginatedItems.map((item) => (
             <button
@@ -45,31 +45,22 @@ export function PokemonList({ selectedPokemon, onSelectPokemon }: PokemonListPro
       </div>
 
       {!isLoading && items.length > 0 ? (
-        <div className="pokemon-pagination" aria-label={t('pokemonPagination.label')}>
-          <button
-            type="button"
-            className="pokemon-pagination-button"
-            disabled={effectivePage === 1}
-            onClick={() => setPage((current) => Math.max(1, Math.min(current, totalPages) - 1))}
-          >
-            {t('pokemonPagination.prev')}
-          </button>
-
-          <p className="pokemon-pagination-text">
-            {t('pokemonPagination.page', { current: effectivePage, total: totalPages })}
-          </p>
-
-          <button
-            type="button"
-            className="pokemon-pagination-button"
-            disabled={effectivePage === totalPages}
-            onClick={() =>
-              setPage((current) => Math.min(totalPages, Math.min(current, totalPages) + 1))
-            }
-          >
-            {t('pokemonPagination.next')}
-          </button>
-        </div>
+        <PaginationControls
+          ariaLabel={t('pokemonPagination.label')}
+          className="pokemon-pagination"
+          previousButtonClassName="pokemon-pagination-button"
+          nextButtonClassName="pokemon-pagination-button"
+          statusClassName="pokemon-pagination-text"
+          previousLabel={t('pokemonPagination.prev')}
+          nextLabel={t('pokemonPagination.next')}
+          onPrevious={() => setPage((current) => Math.max(1, Math.min(current, totalPages) - 1))}
+          onNext={() =>
+            setPage((current) => Math.min(totalPages, Math.min(current, totalPages) + 1))
+          }
+          isPreviousDisabled={effectivePage === 1}
+          isNextDisabled={effectivePage === totalPages}
+          status={t('pokemonPagination.page', { current: effectivePage, total: totalPages })}
+        />
       ) : null}
     </SectionCard>
   );

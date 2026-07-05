@@ -1,1 +1,1 @@
-export { ResumeGeneratorPage } from './resume-generator/ResumeGeneratorPage';
+export { ResumeGeneratorPage } from '@app/routes/resume-generator/ResumeGeneratorPage';

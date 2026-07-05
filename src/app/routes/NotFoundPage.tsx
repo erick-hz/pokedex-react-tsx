@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { RouteActionLink, SectionCard } from '@shared/ui';
+import { RouteActionLink, SectionCard, StatusMessage } from '@shared/ui';
 
 export function NotFoundPage() {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export function NotFoundPage() {
             display: 'block',
           }}
         />
-        <p className="route-home-copy">{t('routes.notFound.description')}</p>
+        <StatusMessage>{t('routes.notFound.description')}</StatusMessage>
         <div className="route-home-actions">
           <RouteActionLink to="/" tone="primary">
             {t('routes.notFound.backHome')}

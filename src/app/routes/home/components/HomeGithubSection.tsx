@@ -1,5 +1,5 @@
 import type { HomePageModel } from '@app/routes/home/useHomePageModel';
-import { CopyBlock, FallbackImage, SectionCard } from '@shared/ui';
+import { CopyBlock, FallbackImage, LabeledValueCard, SectionCard, StatusMessage } from '@shared/ui';
 
 type HomeGithubSectionProps = Pick<
   HomePageModel,
@@ -15,22 +15,26 @@ type HomeGithubSectionProps = Pick<
 function GithubStatsGrid({ t, githubStats }: Pick<HomeGithubSectionProps, 't' | 'githubStats'>) {
   return (
     <div className="github-stat-grid">
-      <article className="github-stat-card">
-        <span>{t('homeDynamic.github.stars')}</span>
-        <strong>{githubStats.stars}</strong>
-      </article>
-      <article className="github-stat-card">
-        <span>{t('homeDynamic.github.forks')}</span>
-        <strong>{githubStats.forks}</strong>
-      </article>
-      <article className="github-stat-card">
-        <span>{t('homeDynamic.github.issues')}</span>
-        <strong>{githubStats.issues}</strong>
-      </article>
-      <article className="github-stat-card">
-        <span>{t('homeDynamic.github.language')}</span>
-        <strong>{githubStats.language}</strong>
-      </article>
+      <LabeledValueCard
+        label={t('homeDynamic.github.stars')}
+        value={githubStats.stars}
+        className="github-stat-card"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.forks')}
+        value={githubStats.forks}
+        className="github-stat-card"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.issues')}
+        value={githubStats.issues}
+        className="github-stat-card"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.language')}
+        value={githubStats.language}
+        className="github-stat-card"
+      />
     </div>
   );
 }
@@ -42,38 +46,46 @@ function GithubMetaGrid({
 }: Pick<HomeGithubSectionProps, 't' | 'githubMetadata' | 'formatRepoDate'>) {
   return (
     <div className="github-meta-grid">
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.owner')}</span>
-        <strong>{githubMetadata.owner}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.visibility')}</span>
-        <strong>{githubMetadata.visibility}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.branch')}</span>
-        <strong>{githubMetadata.branch}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.licenseLabel')}</span>
-        <strong>{githubMetadata.license}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.watchers')}</span>
-        <strong>{githubMetadata.watchers}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.size')}</span>
-        <strong>{githubMetadata.sizeKb} KB</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.created')}</span>
-        <strong>{formatRepoDate(githubMetadata.createdAt)}</strong>
-      </article>
-      <article className="github-meta-item">
-        <span>{t('homeDynamic.github.updated')}</span>
-        <strong>{formatRepoDate(githubMetadata.updatedAt)}</strong>
-      </article>
+      <LabeledValueCard
+        label={t('homeDynamic.github.owner')}
+        value={githubMetadata.owner}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.visibility')}
+        value={githubMetadata.visibility}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.branch')}
+        value={githubMetadata.branch}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.licenseLabel')}
+        value={githubMetadata.license}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.watchers')}
+        value={githubMetadata.watchers}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.size')}
+        value={`${githubMetadata.sizeKb} KB`}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.created')}
+        value={formatRepoDate(githubMetadata.createdAt)}
+        className="github-meta-item"
+      />
+      <LabeledValueCard
+        label={t('homeDynamic.github.updated')}
+        value={formatRepoDate(githubMetadata.updatedAt)}
+        className="github-meta-item"
+      />
     </div>
   );
 }
@@ -130,7 +142,7 @@ function GithubCommitList({
         {!githubCommitsQuery.isLoading &&
         !githubCommitsQuery.isError &&
         githubRecentCommits.length === 0 ? (
-          <p className="route-home-copy">{t('homeDynamic.github.noCommits')}</p>
+          <StatusMessage>{t('homeDynamic.github.noCommits')}</StatusMessage>
         ) : null}
       </div>
     </div>
@@ -191,15 +203,15 @@ export function HomeGithubSection({
       />
 
       {githubRepoQuery.isLoading ? (
-        <p className="route-home-copy">{t('homeDynamic.github.loading')}</p>
+        <StatusMessage>{t('homeDynamic.github.loading')}</StatusMessage>
       ) : githubRepoQuery.isError ? (
-        <p className="route-home-copy">{t('homeDynamic.github.error')}</p>
+        <StatusMessage>{t('homeDynamic.github.error')}</StatusMessage>
       ) : null}
 
       {githubCommitsQuery.isLoading ? (
-        <p className="route-home-copy">{t('homeDynamic.github.loadingCommits')}</p>
+        <StatusMessage>{t('homeDynamic.github.loadingCommits')}</StatusMessage>
       ) : githubCommitsQuery.isError ? (
-        <p className="route-home-copy">{t('homeDynamic.github.errorCommits')}</p>
+        <StatusMessage>{t('homeDynamic.github.errorCommits')}</StatusMessage>
       ) : null}
     </SectionCard>
   );

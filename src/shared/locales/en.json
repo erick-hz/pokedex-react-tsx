@@ -124,7 +124,7 @@
     "carousel": {
       "region": "Route carousel",
       "open": "Catch Now",
-      "prev": "Previous slide",
+      "prev": "Prev slide",
       "next": "Next slide",
       "prevShort": "Prev",
       "nextShort": "Next",
@@ -143,7 +143,7 @@
       "clear": "Clear",
       "results": "Showing {{count}} of {{total}}",
       "empty": "No Pokemon found for \"{{query}}\".",
-      "prev": "Previous",
+      "prev": "Prev",
       "next": "Next",
       "page": "Page {{current}} of {{total}}",
       "gotoPage": "Go to page {{page}}",
@@ -159,7 +159,7 @@
   "loadingPokemon": "Loading Pokémon...",
   "pokemonPagination": {
     "label": "Pokemon list pagination",
-    "prev": "Previous",
+    "prev": "Prev",
     "next": "Next",
     "page": "Page {{current}} of {{total}}"
   },
@@ -265,7 +265,7 @@
     },
     "actions": {
       "removeBlock": "Remove block",
-      "previous": "Previous",
+      "previous": "Prev",
       "next": "Next"
     },
     "states": {

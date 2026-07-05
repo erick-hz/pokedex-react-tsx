@@ -1,10 +1,10 @@
 import type { HomePageModel } from '@app/routes/home/useHomePageModel';
 
-import { HomeGithubSection } from './components/HomeGithubSection';
-import { HomeGallerySection } from './components/HomeGallerySection';
-import { HomeMissionSection } from './components/HomeMissionSection';
-import { HomeSpotlightSection } from './components/HomeSpotlightSection';
-import { HomeTcgSection } from './components/HomeTcgSection';
+import { HomeGithubSection } from '@app/routes/home/components/HomeGithubSection';
+import { HomeGallerySection } from '@app/routes/home/components/HomeGallerySection';
+import { HomeMissionSection } from '@app/routes/home/components/HomeMissionSection';
+import { HomeSpotlightSection } from '@app/routes/home/components/HomeSpotlightSection';
+import { HomeTcgSection } from '@app/routes/home/components/HomeTcgSection';
 
 type HomePageViewProps = HomePageModel;
 

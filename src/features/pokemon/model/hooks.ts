@@ -1,9 +1,9 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-import { fetchPokemonDetails, fetchPokemonList } from '../api/pokemonApi';
+import { fetchPokemonDetails, fetchPokemonList } from '@features/pokemon/api/pokemonApi';
 
-import { pokemonKeys } from './queryKeys';
+import { pokemonKeys } from '@features/pokemon/model/queryKeys';
 
 const POKEMON_LIMIT = 1000;
 

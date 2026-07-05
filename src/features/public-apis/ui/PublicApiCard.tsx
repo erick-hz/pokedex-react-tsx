@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { SectionCard } from '@shared/ui';
+import { SectionCard, StatusMessage } from '@shared/ui';
 
 type PublicApiCardProps = {
   eyebrow: string;
@@ -27,8 +27,12 @@ export function PublicApiCard({
         <p className="public-api-card__description">{description}</p>
 
         <div className="public-api-card__content">
-          {isLoading ? <p className="api-state">{loadingLabel}</p> : children}
-          {error && <p className="api-state api-state--error">{error}</p>}
+          {isLoading ? (
+            <StatusMessage className="api-state">{loadingLabel}</StatusMessage>
+          ) : (
+            children
+          )}
+          {error && <StatusMessage className="api-state api-state--error">{error}</StatusMessage>}
         </div>
       </div>
     </SectionCard>
