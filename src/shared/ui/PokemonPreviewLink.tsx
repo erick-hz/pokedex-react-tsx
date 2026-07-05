@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 
-import FallbackImage from './FallbackImage';
+import FallbackImage from '@shared/ui/FallbackImage';
 
 type PokemonPreviewLinkProps = {
   to: string;

@@ -1,14 +1,14 @@
-import type { ResumeGeneratorModel } from '../useResumeGeneratorModel';
+import type { ResumeGeneratorModel } from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
 
-import { ResumeEducationSection } from './ResumeEducationSection';
-import { ResumeExperienceSection } from './ResumeExperienceSection';
-import { ResumeIdentitySection } from './ResumeIdentitySection';
-import { ResumeLanguagesSection } from './ResumeLanguagesSection';
-import { ResumeLinksSection } from './ResumeLinksSection';
-import { ResumePdfDocument } from './ResumePdfDocument';
-import { ResumePreviewPanel } from './ResumePreviewPanel';
-import { ResumeSkillsSection } from './ResumeSkillsSection';
+import { ResumeEducationSection } from '@app/routes/resume-generator/components/ResumeEducationSection';
+import { ResumeExperienceSection } from '@app/routes/resume-generator/components/ResumeExperienceSection';
+import { ResumeIdentitySection } from '@app/routes/resume-generator/components/ResumeIdentitySection';
+import { ResumeLanguagesSection } from '@app/routes/resume-generator/components/ResumeLanguagesSection';
+import { ResumeLinksSection } from '@app/routes/resume-generator/components/ResumeLinksSection';
+import { ResumePdfDocument } from '@app/routes/resume-generator/components/ResumePdfDocument';
+import { ResumePreviewPanel } from '@app/routes/resume-generator/components/ResumePreviewPanel';
+import { ResumeSkillsSection } from '@app/routes/resume-generator/components/ResumeSkillsSection';
 
 type ResumeGeneratorViewProps = ResumeGeneratorModel;
 

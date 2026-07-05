@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-import { fetchPokemonBattleIntel, fetchPokemonCompanionData } from '../api/publicApisApi';
+import {
+  fetchPokemonBattleIntel,
+  fetchPokemonCompanionData,
+} from '@features/public-apis/api/publicApisApi';
 
-import { publicApisKeys } from './queryKeys';
+import { publicApisKeys } from '@features/public-apis/model/queryKeys';
 
 export function usePokemonCompanionData(name: string) {
   const { i18n } = useTranslation();

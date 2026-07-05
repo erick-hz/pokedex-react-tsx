@@ -6,8 +6,8 @@ import type {
   ResumeExperience,
   ResumeLink,
   ResumeSkill,
-} from '../useResumeGeneratorModel';
-import { groupByPairs } from '../useResumeGeneratorModel';
+} from '@app/routes/resume-generator/useResumeGeneratorModel';
+import { groupByPairs } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumePdfDocumentProps = {
   fullName: string;

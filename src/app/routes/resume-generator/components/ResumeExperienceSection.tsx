@@ -1,7 +1,10 @@
-import type { ResumeExperience, ResumeGeneratorModel } from '../useResumeGeneratorModel';
+import type {
+  ResumeExperience,
+  ResumeGeneratorModel,
+} from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
-import { DangerRoutePillButton } from '@shared/ui';
-import { FIELD_LIMITS } from '../useResumeGeneratorModel';
+import { DangerRoutePillButton, PaginationControls, StatusMessage } from '@shared/ui';
+import { FIELD_LIMITS } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumeExperienceSectionProps = Pick<
   ResumeGeneratorModel,
@@ -125,34 +128,28 @@ export function ResumeExperienceSection({
           updateExperienceBullet={updateExperienceBullet}
         />
       ) : (
-        <p className="resume-empty-state">{t('resumeGenerator.states.noEmploymentEntries')}</p>
+        <StatusMessage className="resume-empty-state">
+          {t('resumeGenerator.states.noEmploymentEntries')}
+        </StatusMessage>
       )}
 
-      <div
+      <PaginationControls
+        ariaLabel={t('resumeGenerator.sections.employmentHistoryPages')}
         className="resume-section-paginator"
-        role="group"
-        aria-label={t('resumeGenerator.sections.employmentHistoryPages')}
-      >
-        <button
-          type="button"
-          className="route-pill"
-          onClick={goToPreviousExperience}
-          disabled={!canGoToPreviousExperience}
-        >
-          {t('resumeGenerator.actions.previous')}
-        </button>
-        <span className="resume-paginator-status" aria-live="polite">
-          {totalExperiences === 0 ? '0 / 0' : `${activeExperienceIndex + 1} / ${totalExperiences}`}
-        </span>
-        <button
-          type="button"
-          className="route-pill"
-          onClick={goToNextExperience}
-          disabled={!canGoToNextExperience}
-        >
-          {t('resumeGenerator.actions.next')}
-        </button>
-      </div>
+        previousButtonClassName="route-pill"
+        nextButtonClassName="route-pill"
+        statusClassName="resume-paginator-status"
+        statusAs="span"
+        previousLabel={t('resumeGenerator.actions.previous')}
+        nextLabel={t('resumeGenerator.actions.next')}
+        onPrevious={goToPreviousExperience}
+        onNext={goToNextExperience}
+        isPreviousDisabled={!canGoToPreviousExperience}
+        isNextDisabled={!canGoToNextExperience}
+        status={
+          totalExperiences === 0 ? '0 / 0' : `${activeExperienceIndex + 1} / ${totalExperiences}`
+        }
+      />
     </section>
   );
 }
