@@ -1,5 +1,6 @@
 import type { HomePageModel } from '@app/routes/home/useHomePageModel';
 import {
+  ActionGroup,
   CopyBlock,
   FallbackImage,
   RouteActionButton,
@@ -94,7 +95,7 @@ export function HomeSpotlightSection({
         <div className="route-live-content">
           <CopyBlock className="route-home-copy">{t('homeDynamic.subtitle')}</CopyBlock>
 
-          <div className="route-home-actions">
+          <ActionGroup className="route-home-actions">
             <RouteActionButton type="button" tone="primary" onClick={randomizeSpotlight}>
               {t('homeDynamic.randomize')}
             </RouteActionButton>
@@ -110,7 +111,7 @@ export function HomeSpotlightSection({
             >
               {t('homeDynamic.openSpotlight')}
             </RouteActionLink>
-          </div>
+          </ActionGroup>
 
           <SpotlightMetricRow t={t} i18n={i18n} spotlightCandidates={spotlightCandidates} />
         </div>

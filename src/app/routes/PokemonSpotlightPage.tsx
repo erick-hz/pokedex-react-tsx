@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { PokemonDetail } from '@features/pokemon';
 import { PublicApisDashboard } from '@features/public-apis';
-import { RouteActionLink } from '@shared/ui';
+import { ActionGroup, RouteActionLink } from '@shared/ui';
 import { useParams } from '@tanstack/react-router';
 
 export function PokemonSpotlightPage() {
@@ -11,14 +11,14 @@ export function PokemonSpotlightPage() {
 
   return (
     <section className="section-stack route-spotlight-stack">
-      <div className="route-inline-actions">
+      <ActionGroup>
         <RouteActionLink to="/pokedex" search={{ pokemon: pokemonName }}>
           {t('routes.actions.backToList')}
         </RouteActionLink>
         <RouteActionLink to="/intel" search={{ pokemon: pokemonName }}>
           {t('routes.actions.openIntel')}
         </RouteActionLink>
-      </div>
+      </ActionGroup>
 
       <PokemonDetail selectedPokemon={pokemonName} />
       <PublicApisDashboard selectedPokemon={pokemonName} />

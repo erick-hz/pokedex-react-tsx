@@ -1,5 +1,6 @@
 import type { ResumeGeneratorModel } from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
+import { ResumeFormSection } from '@shared/ui';
 import { FIELD_LIMITS } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumeEducationSectionProps = Pick<ResumeGeneratorModel, 'education' | 'updateEducation'>;
@@ -11,11 +12,7 @@ export function ResumeEducationSection({
   const { t } = useTranslation();
 
   return (
-    <section className="resume-form-section" aria-label={t('resumeGenerator.sections.education')}>
-      <div className="resume-form-section-header">
-        <h3>{t('resumeGenerator.sections.education')}</h3>
-      </div>
-
+    <ResumeFormSection title={t('resumeGenerator.sections.education')}>
       {education.map((item) => (
         <article key={item.id} className="resume-dynamic-card">
           <div className="resume-form-grid">
@@ -46,6 +43,6 @@ export function ResumeEducationSection({
           </div>
         </article>
       ))}
-    </section>
+    </ResumeFormSection>
   );
 }

@@ -3,7 +3,12 @@ import type {
   ResumeGeneratorModel,
 } from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
-import { DangerRoutePillButton, PaginationControls, StatusMessage } from '@shared/ui';
+import {
+  DangerRoutePillButton,
+  PaginationControls,
+  ResumeFormSection,
+  StatusMessage,
+} from '@shared/ui';
 import { FIELD_LIMITS } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumeExperienceSectionProps = Pick<
@@ -110,17 +115,14 @@ export function ResumeExperienceSection({
   const { t } = useTranslation();
 
   return (
-    <section
-      className="resume-form-section"
-      aria-label={t('resumeGenerator.sections.employmentHistory')}
-    >
-      <div className="resume-form-section-header">
-        <h3>{t('resumeGenerator.sections.employmentHistory')}</h3>
+    <ResumeFormSection
+      title={t('resumeGenerator.sections.employmentHistory')}
+      action={
         <DangerRoutePillButton type="button" onClick={clearActiveExperience}>
           {t('resumeGenerator.actions.removeBlock')}
         </DangerRoutePillButton>
-      </div>
-
+      }
+    >
       {activeExperience ? (
         <EmploymentCard
           activeExperience={activeExperience}
@@ -150,6 +152,6 @@ export function ResumeExperienceSection({
           totalExperiences === 0 ? '0 / 0' : `${activeExperienceIndex + 1} / ${totalExperiences}`
         }
       />
-    </section>
+    </ResumeFormSection>
   );
 }

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { BlobProvider } from '@react-pdf/renderer';
 import type { DocumentProps } from '@react-pdf/renderer';
+import { PanelHeader } from '@shared/ui';
 
 type ResumePreviewPanelProps = {
   document: ReactElement<DocumentProps>;
@@ -15,27 +16,27 @@ export function ResumePreviewPanel({ document }: ResumePreviewPanelProps) {
     <BlobProvider document={document}>
       {({ url, loading }) => (
         <>
-          <div className="panel-header">
-            <div>
-              <p className="eyebrow">{t('resumeGenerator.form.previewEyebrow')}</p>
-              <h2 id="resume-preview-title">{t('resumeGenerator.form.previewTitle')}</h2>
-            </div>
-
-            {loading || !url ? (
-              <span className="route-cta route-cta-primary">
-                {t('resumeGenerator.form.generatingPdf')}
-              </span>
-            ) : (
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="route-cta route-cta-primary"
-              >
-                {t('resumeGenerator.form.downloadPdf')}
-              </a>
-            )}
-          </div>
+          <PanelHeader
+            eyebrow={t('resumeGenerator.form.previewEyebrow')}
+            title={t('resumeGenerator.form.previewTitle')}
+            titleId="resume-preview-title"
+            action={
+              loading || !url ? (
+                <span className="route-cta route-cta-primary">
+                  {t('resumeGenerator.form.generatingPdf')}
+                </span>
+              ) : (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="route-cta route-cta-primary"
+                >
+                  {t('resumeGenerator.form.downloadPdf')}
+                </a>
+              )
+            }
+          />
 
           <div className="resume-preview-frame">
             {loading || !url ? (

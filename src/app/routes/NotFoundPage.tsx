@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { RouteActionLink, SectionCard, StatusMessage } from '@shared/ui';
+import { ActionGroup, RouteActionLink, SectionCard, StatusMessage } from '@shared/ui';
 
 export function NotFoundPage() {
   const { t } = useTranslation();
@@ -21,12 +21,12 @@ export function NotFoundPage() {
           }}
         />
         <StatusMessage>{t('routes.notFound.description')}</StatusMessage>
-        <div className="route-home-actions">
+        <ActionGroup className="route-home-actions">
           <RouteActionLink to="/" tone="primary">
             {t('routes.notFound.backHome')}
           </RouteActionLink>
           <RouteActionLink to="/pokedex">{t('routes.notFound.openPokedex')}</RouteActionLink>
-        </div>
+        </ActionGroup>
       </SectionCard>
     </section>
   );

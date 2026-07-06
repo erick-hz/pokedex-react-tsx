@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { PokemonDetail, PokemonList } from '@features/pokemon';
-import { RouteActionLink } from '@shared/ui';
+import { ActionGroup, RouteActionLink } from '@shared/ui';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 
 export function PokedexPage() {
@@ -27,7 +27,7 @@ export function PokedexPage() {
         <PokemonDetail selectedPokemon={selectedPokemon} />
       </section>
 
-      <section className="section-stack route-inline-actions">
+      <ActionGroup as="section" className="section-stack">
         <RouteActionLink
           to="/pokedex/$pokemonName"
           params={{ pokemonName: selectedPokemon }}
@@ -38,7 +38,7 @@ export function PokedexPage() {
         <RouteActionLink to="/battle-lab" search={{ pokemon: selectedPokemon }}>
           {t('routes.actions.openBattleLab')}
         </RouteActionLink>
-      </section>
+      </ActionGroup>
     </>
   );
 }
