@@ -1,5 +1,8 @@
 export { default as PokemonHoloCard } from './PokemonHoloCard';
 export { default as SectionCard } from './SectionCard';
+export { default as PanelHeader } from './PanelHeader';
+export { default as ResumeFormSection } from './ResumeFormSection';
+export { default as ActionGroup } from './ActionGroup';
 export { default as StatCard } from './StatCard';
 export { default as LabeledValueCard } from './LabeledValueCard';
 export { default as PaginationControls } from './PaginationControls';

@@ -9,6 +9,7 @@ import { ResumeLinksSection } from '@app/routes/resume-generator/components/Resu
 import { ResumePdfDocument } from '@app/routes/resume-generator/components/ResumePdfDocument';
 import { ResumePreviewPanel } from '@app/routes/resume-generator/components/ResumePreviewPanel';
 import { ResumeSkillsSection } from '@app/routes/resume-generator/components/ResumeSkillsSection';
+import { RoutePillButton, SectionCard } from '@shared/ui';
 
 type ResumeGeneratorViewProps = ResumeGeneratorModel;
 
@@ -67,21 +68,20 @@ export function ResumeGeneratorView({
 
   return (
     <section className="section-stack resume-generator-stack">
-      <section className="panel resume-form-panel" aria-labelledby="resume-form-title">
-        <div className="panel-header">
-          <div>
-            <p className="eyebrow">{t('resumeGenerator.form.eyebrow')}</p>
-            <h2 id="resume-form-title">{t('resumeGenerator.form.title')}</h2>
-          </div>
-          <button
+      <SectionCard
+        eyebrow={t('resumeGenerator.form.eyebrow')}
+        title={t('resumeGenerator.form.title')}
+        className="resume-form-panel"
+        action={
+          <RoutePillButton
             type="button"
-            className="route-pill route-pill-compact route-pill-success"
+            className="route-pill-compact route-pill-success"
             onClick={resetAll}
           >
             {t('resumeGenerator.form.resetAll')}
-          </button>
-        </div>
-
+          </RoutePillButton>
+        }
+      >
         <ResumeIdentitySection
           fullName={fullName}
           setFullName={setFullName}
@@ -120,7 +120,7 @@ export function ResumeGeneratorView({
         />
 
         <ResumeEducationSection education={education} updateEducation={updateEducation} />
-      </section>
+      </SectionCard>
 
       <section className="panel resume-preview-panel" aria-labelledby="resume-preview-title">
         <ResumePreviewPanel document={resumeDocument} />

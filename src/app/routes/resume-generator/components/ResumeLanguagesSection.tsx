@@ -1,5 +1,6 @@
 import type { ResumeGeneratorModel } from '@app/routes/resume-generator/useResumeGeneratorModel';
 import { useTranslation } from 'react-i18next';
+import { ResumeFormSection } from '@shared/ui';
 import { FIELD_LIMITS } from '@app/routes/resume-generator/useResumeGeneratorModel';
 
 type ResumeLanguagesSectionProps = Pick<
@@ -16,14 +17,7 @@ export function ResumeLanguagesSection({
   const { t } = useTranslation();
 
   return (
-    <section
-      className="resume-form-section"
-      aria-label={t('resumeGenerator.sections.languagesAndHobbies')}
-    >
-      <div className="resume-form-section-header">
-        <h3>{t('resumeGenerator.sections.languages')}</h3>
-      </div>
-
+    <ResumeFormSection title={t('resumeGenerator.sections.languages')}>
       {languages.map((language, index) => (
         <div key={`${language}-${index}`} className="resume-inline-grid">
           <input
@@ -43,6 +37,6 @@ export function ResumeLanguagesSection({
           onChange={(event) => setHobbies(event.target.value)}
         />
       </label>
-    </section>
+    </ResumeFormSection>
   );
 }

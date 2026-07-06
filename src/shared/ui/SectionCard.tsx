@@ -1,6 +1,8 @@
 import { useId } from 'react';
 import type { ElementType, ReactNode } from 'react';
 
+import PanelHeader from './PanelHeader';
+
 type SectionCardProps = {
   eyebrow: string;
   title: string;
@@ -23,15 +25,13 @@ export default function SectionCard({
 
   return (
     <section aria-labelledby={headingId} className={['panel', className].filter(Boolean).join(' ')}>
-      <div className="panel-header">
-        <div>
-          <p className="eyebrow">{eyebrow}</p>
-
-          <Heading id={headingId}>{title}</Heading>
-        </div>
-
-        {action && <div className="panel-action">{action}</div>}
-      </div>
+      <PanelHeader
+        eyebrow={eyebrow}
+        title={title}
+        titleId={headingId}
+        headingLevel={Heading}
+        action={action}
+      />
 
       {children}
     </section>

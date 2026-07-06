@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { PokemonDetail, PokemonList, usePokemonList } from '@features/pokemon';
-import { RouteActionLink, RoutePillButton, SectionCard } from '@shared/ui';
+import { ActionGroup, RouteActionLink, RoutePillButton, SectionCard } from '@shared/ui';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 
 export function BattleLabPage() {
@@ -18,7 +18,7 @@ export function BattleLabPage() {
   return (
     <section className="section-stack route-battle-stack">
       <SectionCard eyebrow={t('routes.battleLab')} title={t('battleLab.title')}>
-        <div className="route-inline-actions">
+        <ActionGroup>
           <RouteActionLink to="/pokedex" search={{ pokemon: selectedPokemon }}>
             {t('battleLab.editChallenger')}
           </RouteActionLink>
@@ -37,7 +37,7 @@ export function BattleLabPage() {
               {rival.displayName ?? rival.name}
             </RoutePillButton>
           ))}
-        </div>
+        </ActionGroup>
       </SectionCard>
 
       <section className="route-battle-grid">
