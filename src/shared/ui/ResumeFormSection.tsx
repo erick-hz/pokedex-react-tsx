@@ -6,6 +6,7 @@ type ResumeFormSectionProps = {
   children: ReactNode;
   action?: ReactNode;
   className?: string;
+  ariaLabel?: string;
 };
 
 export default function ResumeFormSection({
@@ -13,13 +14,15 @@ export default function ResumeFormSection({
   children,
   action,
   className,
+  ariaLabel,
 }: ResumeFormSectionProps) {
   const titleId = useId();
 
   return (
     <section
       className={['resume-form-section', className].filter(Boolean).join(' ')}
-      aria-labelledby={titleId}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabel ? undefined : titleId}
     >
       <div className="resume-form-section-header">
         <h3 id={titleId}>{title}</h3>
