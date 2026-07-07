@@ -17,7 +17,10 @@ export function ResumeLanguagesSection({
   const { t } = useTranslation();
 
   return (
-    <ResumeFormSection title={t('resumeGenerator.sections.languages')}>
+    <ResumeFormSection
+      title={t('resumeGenerator.sections.languages')}
+      ariaLabel={t('resumeGenerator.sections.languagesAndHobbies')}
+    >
       {languages.map((language, index) => (
         <div key={`${language}-${index}`} className="resume-inline-grid">
           <input
