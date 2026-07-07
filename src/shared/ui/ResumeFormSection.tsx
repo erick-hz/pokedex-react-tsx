@@ -17,12 +17,13 @@ export default function ResumeFormSection({
   ariaLabel,
 }: ResumeFormSectionProps) {
   const titleId = useId();
+  const normalizedAriaLabel = ariaLabel?.trim() || undefined;
 
   return (
     <section
       className={['resume-form-section', className].filter(Boolean).join(' ')}
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabel ? undefined : titleId}
+      aria-label={normalizedAriaLabel}
+      aria-labelledby={normalizedAriaLabel ? undefined : titleId}
     >
       <div className="resume-form-section-header">
         <h3 id={titleId}>{title}</h3>
