@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
+import { Outlet } from '@tanstack/react-router';
 
-import { LanguageSwitcher } from '@features/language-switcher';
-import { ThemeToggle } from '@features/theme-toggle';
+import { Navbar } from '@app/components';
 
 export function RootLayout() {
-  const { t } = useTranslation();
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     if (typeof window === 'undefined') {
       return false;
@@ -40,62 +37,7 @@ export function RootLayout() {
 
   return (
     <main className="pokedex-shell">
-      <header className="gateway-header gateway-header--router">
-        <Link to="/" className="header-brand-link" aria-label={t('routes.home')}>
-          <div className="header-brand-block">
-            <p className="eyebrow">{t('pokedex')}</p>
-            <div className="header-brand-title-row">
-              {isDarkMode ? (
-                <img
-                  src="/poke-purple.png"
-                  className="pokeball-logo-image"
-                  alt=""
-                  aria-hidden="true"
-                />
-              ) : (
-                <span className="pokeball-logo" aria-hidden="true" />
-              )}
-              <h1>{t('appTitle')}</h1>
-            </div>
-          </div>
-        </Link>
-
-        <nav className="route-nav" aria-label={t('routes.navigation')}>
-          <Link
-            to="/pokedex"
-            className="route-nav-link"
-            activeProps={{ className: 'route-nav-link active' }}
-          >
-            {t('routes.pokedex')}
-          </Link>
-          <Link
-            to="/intel"
-            className="route-nav-link"
-            activeProps={{ className: 'route-nav-link active' }}
-          >
-            {t('routes.intel')}
-          </Link>
-          <Link
-            to="/battle-lab"
-            className="route-nav-link"
-            activeProps={{ className: 'route-nav-link active' }}
-          >
-            {t('routes.battleLab')}
-          </Link>
-          <Link
-            to="/resume-generator"
-            className="route-nav-link"
-            activeProps={{ className: 'route-nav-link active' }}
-          >
-            {t('routes.resumeGenerator')}
-          </Link>
-        </nav>
-
-        <div className="header-actions">
-          <LanguageSwitcher />
-          <ThemeToggle isDarkMode={isDarkMode} onToggle={() => setIsDarkMode((prev) => !prev)} />
-        </div>
-      </header>
+      <Navbar isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((prev) => !prev)} />
 
       <Outlet />
     </main>
