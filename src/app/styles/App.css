@@ -1735,8 +1735,14 @@ body {
   align-items: end;
 }
 
-.resume-form-section[aria-label='Skills'] .resume-inline-grid {
-  grid-template-columns: minmax(0, 1fr);
+.resume-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.resume-skills-item {
+  min-width: 0;
 }
 
 .resume-inline-grid .route-pill {
@@ -1995,6 +2001,10 @@ body {
   .resume-job-heading,
   .resume-education-row,
   .resume-inline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-skills-grid {
     grid-template-columns: 1fr;
   }
 

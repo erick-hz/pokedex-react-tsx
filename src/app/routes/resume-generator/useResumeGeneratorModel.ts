@@ -165,7 +165,7 @@ export function createInitialSkills(): ResumeSkill[] {
     { id: createId(), name: 'Redux', level: 'Expert' },
     { id: createId(), name: 'Node JS', level: 'Expert' },
     { id: createId(), name: 'Git', level: 'Expert' },
-    { id: createId(), name: 'HTML & CSS', level: 'Expert' },
+    { id: createId(), name: 'HTML & CSS (Tailwind)', level: 'Expert' },
   ];
 }
 
@@ -179,7 +179,7 @@ export function createInitialEducation(): ResumeEducation[] {
       id: createId(),
       dateRange: 'Jan 2017 - Jan 2020',
       institution: 'Universidad Tecnologica de Mexico',
-      degree: 'Software and Network Engineering',
+      degree: 'B.Eng. in Artificial Intelligence',
     },
   ];
 }
