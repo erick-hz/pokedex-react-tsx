@@ -24,16 +24,18 @@ export function ResumeSkillsSection({
         </DangerRoutePillButton>
       }
     >
-      {skills.map((skill) => (
-        <div key={skill.id} className="resume-inline-grid">
-          <input
-            maxLength={FIELD_LIMITS.skillName}
-            placeholder={t('resumeGenerator.fields.skillPlaceholder')}
-            value={skill.name}
-            onChange={(event) => updateSkill(skill.id, { name: event.target.value })}
-          />
-        </div>
-      ))}
+      <div className="resume-skills-grid">
+        {skills.map((skill) => (
+          <div key={skill.id} className="resume-skills-item">
+            <input
+              maxLength={FIELD_LIMITS.skillName}
+              placeholder={t('resumeGenerator.fields.skillPlaceholder')}
+              value={skill.name}
+              onChange={(event) => updateSkill(skill.id, { name: event.target.value })}
+            />
+          </div>
+        ))}
+      </div>
     </ResumeFormSection>
   );
 }
