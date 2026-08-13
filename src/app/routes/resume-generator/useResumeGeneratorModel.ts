@@ -179,7 +179,7 @@ export function createInitialEducation(): ResumeEducation[] {
       id: createId(),
       dateRange: 'Jan 2017 - Jan 2020',
       institution: 'Universidad Tecnologica de Mexico',
-      degree: 'B.Eng. in Artificial Intelligence',
+      degree: 'Artificial Intelligence Engineering',
     },
   ];
 }
